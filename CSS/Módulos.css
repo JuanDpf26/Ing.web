@@ -1,0 +1,101 @@
+/* styles.css */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  body {
+    background: url('../IMAGES/background.jpeg') no-repeat center center fixed;
+    background-size: cover;
+    background-attachment: fixed;
+    color: #1a1a1a;
+  }
+  
+  .module-button {
+    margin-top: 15px;
+    padding: 10px 20px;
+    background-color: #FFD600;
+    color: #1a1a1a;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .module-button:hover {
+    background-color: #e6c200;
+  }
+  
+  
+  h2 {
+    text-align: center;
+    margin: 40px 0 20px;
+    font-size: 32px;
+    color: #fff;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
+  }
+  
+  .dashboard {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+  }
+  
+  .module {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    width: 220px;
+    text-align: center;
+    padding: 30px 20px;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    cursor: pointer;
+    color: #fff;
+  }
+  
+  .module:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.3);
+  }
+  
+  .module img {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    border: 2px solid #FFD600;
+    background-color: white;
+    padding: 4px;
+  }
+  
+  .module-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 10px;
+    color: #FFD600;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+  }
+  
+  @media (max-width: 768px) {
+    .module {
+      width: 45%;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .module {
+      width: 100%;
+    }
+  }
+  
+  

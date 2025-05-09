@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto</title>
+    <link rel="stylesheet" href="../CSS/Contactar.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <link rel="stylesheet" href="../CSS/chatbot.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <h1>RLV</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="Home.html">NOSOTROS</a></li>
+                    <li><a href="Servicios.html">SERVICIOS</a></li>
+                    <li><a href="programar_citas.html">AGENDAR CITA</a></li>
+                    <li><a href="#">CONTÁCTENOS</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="contact-section container">
+        <div class="contact-form">
+            <form action="#">
+                <h3>Envíanos tu mensaje</h3>
+                <input type="text" name="id" placeholder="Tu ID" required>
+                <input type="text" name="nombre" placeholder="Tu nombre" required>
+                <input type="email" name="email" placeholder="Tu correo electrónico" required>
+                <input type="tel" name="telefono" placeholder="Tu teléfono" required>
+                <textarea name="mensaje" placeholder="Tu mensaje" required></textarea>
+                <button type="submit">Enviar mensaje</button>
+            </form>
+        </div>
+
+        <div class="contact-info">
+            <h3>Contáctanos</h3>
+            <p>Si tienes alguna pregunta o necesitas asistencia legal, no dudes en comunicarte con nosotros.</p>
+            <h4>Dirección:</h4>
+            <p>Av. 4 Calle 12 C.C. El Remolino Ofc. 217 Cúcuta</p>
+            <h4>Teléfono:</h4>
+            <p>320 938 0440</p>
+            <h4>Correo:</h4>
+            <p>rastrolegalvial@gmail.com</p>
+            <h4>Horarios de atención:</h4>
+            <ul>
+                <li>Lunes a Viernes: 7:00 AM - 6:00 PM</li>
+                <li>Sábado: 7:00 AM - 12:00 PM</li>
+                <li>Domingos y festivos: No hay atención </li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="map-container">
+        <div class="map">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2299.5754960343197!2d-72.50382695484026!3d7.8851559041249!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e66459e7fbad45d%3A0xa6ccd6662fcc7f9b!2sCC%20Remolino!5e0!3m2!1sen!2sco!4v1731707262009!5m2!1sen!2sco" 
+                frameborder="0" style="border:0; width: 100%; height: px;" allowfullscreen></iframe>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content container">
+            <div class="footer-logo">
+                <a href="#" class="logo">RLV</a>
+                <p>&copy; 2024 Rastro Legal Vial. Todos los derechos reservados.</p>
+            </div>
+            <div class="footer-links">
+                <ul>
+                    <li><a href="pagina.html">NOSOTROS</a></li>
+                    <li><a href="Servicios.html">SERVICIOS</a></li>
+                    <li><a href="programar_citas.html">AGENDAR CITA</a></li>
+                    <li><a href="#">CONTÁCTENOS</a></li>
+                    <li><a href="../HTML/login.html">CERRAR SESIÓN</a></li>
+                </ul>
+            </div>
+            <div class="footer-social">
+                <ul>
+                    <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                    <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                    <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+                    <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+   
+    <div id="chat-container">
+        <div id="chat-header">
+            <span>Asistente Virtual</span>
+            <button id="close-chat">×</button>
+        </div>
+        <div id="chat-body">
+            <div id="chat-messages"></div>
+            <div id="chat-input-container">
+                <input type="text" id="chat-input" placeholder="Escribe un mensaje...">
+                <button id="send-button">Enviar</button>
+            </div>
+        </div>
+    </div>
+    <button id="open-chat">Chat</button>
+
+    
+    <script src="Chatbot.js"></script>
+</body>
+
+</html>
+

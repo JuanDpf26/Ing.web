@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programar Citas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../CSS/ProgramaciónCitas.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <h1>RLV</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="pagina.html">NOSOTROS</a></li>
+                    <li><a href="Servicios.html">SERVICIOS</a></li>
+                    <li><a href="#">AGENDAR CITA</a></li>
+                    <li><a href="Contact.html">CONTÁCTENOS</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="option">
+            <h2>Panel de Programación</h2>
+            <p>Programa las citas pendientes:</p>
+            <form class="programar-citas-form" action="../PHP/procesar_citas.php" method="POST">
+
+                <label for="id">Nombre del cliente:</label>
+                <input type="text" id="id" name="id" placeholder="identificación" required>
+
+                <label for="nombre_cliente">Nombre del cliente:</label>
+                <input type="text" id="nombre_cliente" name="nombre_cliente" placeholder="Nombre del cliente" required>
+
+                <label for="servicio">Seleccione un servicio:</label>
+                <select id="servicio" name="servicio" onchange="actualizarDetalles()" required>
+                    <option value="">Seleccione un servicio</option>
+                    <option value="Asesoría Jurídica en Siniestros Viales">Asesoría Jurídica en Siniestros Viales</option>
+                    <option value="Implementación y Manejo del PESV">Implementación y Manejo del PESV</option>
+                    <option value="Reconstrucción Técnica y Analítica de Siniestros Viales">Reconstrucción Técnica y Analítica de Siniestros Viales</option>
+                    <option value="Servicios Funerarios en Siniestros Viales">Servicios Funerarios en Siniestros Viales</option>
+                    <option value="Reclamaciones Ante las Aseguradoras">Reclamaciones Ante las Aseguradoras</option>
+                </select>
+
+                <label for="correo">Correo:</label>
+                <input type="email" id="correo" name="correo" placeholder="correo" required>
+
+                <label for="precio">Costo del servicio:</label>
+                <input type="text" id="precio" name="precio" placeholder="Precio" readonly>
+
+                <label for="duracion">Duración:</label>
+                <input type="text" id="duracion" name="duracion" placeholder="Duración" readonly>
+
+                <label for="fecha_reunion">Fecha de la reunión:</label>
+                <input type="date" id="fecha_reunion" name="fecha_reunion" required>
+
+                <label for="hora_reunion">Hora de la reunión:</label>
+                <input type="time" id="hora_reunion" name="hora_reunion" required>
+
+                <button type="submit">Agregar programación de la cita</button>
+            </form>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content container">
+            <div class="footer-logo">
+                <a href="#" class="logo">RLV</a>
+                <p>&copy; 2024 Rastro Legal Vial. Todos los derechos reservados.</p>
+            </div>
+            <div class="footer-links">
+                <ul>
+                    <li><a href="pagina.html">NOSOTROS</a></li>
+                    <li><a href="servicios.html">SERVICIOS</a></li>
+                    <li><a href="#">AGENDAR CITA</a></li>
+                    <li><a href="Contact.html">CONTÁCTENOS</a></li>
+                    <li><a href="login.html">CERRAR SESIÓN</a></li>
+                </ul>
+            </div>
+            <div class="footer-social">
+                <ul>
+                    <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                    <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                    <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+                    <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Función para actualizar los detalles de precio y duración al seleccionar el servicio
+        function actualizarDetalles() {
+            const servicioSeleccionado = document.getElementById("servicio").value;
+            const precio = document.getElementById("precio");
+            const duracion = document.getElementById("duracion");
+
+            const servicios = {
+                "Asesoría Jurídica en Siniestros Viales": { precio: "250,000 COP", duracion: "1 hora" },
+                "Implementación y Manejo del PESV": { precio: "1,000,000 COP", duracion: "4 horas" },
+                "Reconstrucción Técnica y Analítica de Siniestros Viales": { precio: "800,000 COP", duracion: "3 horas" },
+                "Servicios Funerarios en Siniestros Viales": { precio: "500,000 COP", duracion: "2 horas" },
+                "Reclamaciones Ante las Aseguradoras": { precio: "300,000 COP", duracion: "1.5 horas" }
+            };
+
+            if (servicios[servicioSeleccionado]) {
+                precio.value = servicios[servicioSeleccionado].precio;
+                duracion.value = servicios[servicioSeleccionado].duracion;
+            } else {
+                precio.value = "";
+                duracion.value = "";
+            }
+        }
+
+        // Mostrar el mensaje del servidor en un pop-up (alerta)
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const message = urlParams.get('message');
+            if (message) {
+                alert(decodeURIComponent(message));
+            }
+        }
+    </script>
+
+</body>
+</html>
+
+
+
+
+
+

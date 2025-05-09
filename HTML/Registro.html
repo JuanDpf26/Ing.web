@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registro</title>
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <style>
+        .popup-message {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 10px 20px;
+            border: 1px solid #f5c6cb;
+            border-radius: 5px;
+            display: none;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            font-size: 1rem;
+            align-items: center;
+        }
+
+        .popup-message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border-color: #c3e6cb;
+        }
+
+        .popup-message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border-color: #f5c6cb;
+        }
+
+        .popup-message i {
+            margin-right: 8px;
+        }
+
+        form label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        form label i {
+            margin-right: 8px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .link-login {
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        .link-login:hover {
+            text-decoration: underline;
+        }
+
+        .login-container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .image-container {
+            flex: 1;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            width: 600px;
+            margin-right: 20px;
+        }
+
+        .container h1 {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .container p {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        form {
+            width: 100%;
+        }
+
+        label {
+            color: #333;
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            background-color: #f9f9f9;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, select:focus {
+            border-color: #f1d103;
+            outline: none;
+        }
+
+        button {
+            background-color: #f1d103;
+            color: black;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            border-radius: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        button:hover {
+            background-color: #e0b900;
+            color: white;
+        }
+
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #333;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: #f1d103;
+        }
+
+        .error {
+            background-color: #af4a4a;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 20px auto;
+            width: 95%;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .login-container {
+                flex-direction: column;
+                height: auto;
+            }
+
+            .image-container {
+                display: block;
+                width: 100%;
+                height: 200px;
+            }
+
+            .container {
+                width: 90%;
+                max-width: 500px;
+                margin: 0 auto;
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 1rem;
+                width: 95%;
+            }
+
+            .container h1 {
+                font-size: 1.5rem;
+            }
+
+            .container p,
+            label,
+            input,
+            select,
+            button,
+            a {
+                font-size: 0.9rem;
+            }
+
+            button {
+                padding: 10px;
+            }
+
+            .popup-message {
+                font-size: 0.9rem;
+                padding: 8px 16px;
+                width: 90%;
+                left: 5%;
+                transform: none;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .container h1 {
+                font-size: 1.2rem;
+            }
+
+            input,
+            select,
+            button,
+            label,
+            a {
+                font-size: 0.8rem;
+            }
+
+            button {
+                padding: 8px;
+            }
+
+            .popup-message {
+                font-size: 0.8rem;
+                padding: 6px 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="popupMessage" class="popup-message"></div>
+
+    <div class="login-container">
+        <div class="image-container">
+            <img src="../IMAGES/header.jpeg" alt="Imagen de Registro">
+        </div>
+
+        <div class="container">
+            <form id="registroForm" action="../PHP/Registro.php" method="POST">
+                <h1>REGISTRO</h1>
+                <hr>
+
+                <label for="id"><i class="fas fa-id-card"></i> ID</label>
+                <input type="text" name="id" placeholder="ID del Usuario" required>
+
+                <label for="nombre"><i class="fas fa-user"></i> Nombre</label>
+                <input type="text" name="nombre" placeholder="Nombre Completo" required>
+
+                <label for="edad"><i class="fas fa-calendar-alt"></i> Edad</label>
+                <input type="number" name="edad" placeholder="Edad" required>
+
+                <label for="correo"><i class="fas fa-envelope"></i> Correo</label>
+                <input type="email" name="correo" placeholder="Correo Electrónico" required>
+
+                <label for="password"><i class="fas fa-lock"></i> Contraseña</label>
+                <input type="password" name="password" placeholder="Contraseña" required>
+
+                <label for="tipo"><i class="fas fa-user-shield"></i> Tipo de cuenta</label>
+                <select name="tipo" id="tipo" required>
+                    <option value="">Selecciona una opción</option>
+                    <option value="cliente">Cliente</option>
+                    <option value="administrador">Administrador</option>
+                </select>
+
+                <hr>
+                <div class="form-actions">
+                    <button type="submit" class="boton" id="btnRegistro">Registrarse</button>
+                    <a href="../HTML/InicioSesion.html" class="link-login">¿Ya tienes una cuenta? Inicia sesión</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Mostrar mensaje desde query string
+        const urlParams = new URLSearchParams(window.location.search);
+        const message = urlParams.get('message');
+        const success = urlParams.get('success');
+    
+        if (message) {
+            const popup = document.getElementById('popupMessage');
+            const icon = document.createElement('i');
+    
+            if (success === "true") {
+                popup.classList.add('success');
+                icon.className = 'fas fa-check-circle';
+            } else {
+                popup.classList.add('error');
+                icon.className = 'fas fa-exclamation-circle';
+            }
+    
+            popup.appendChild(icon);
+            popup.appendChild(document.createTextNode(decodeURIComponent(message)));
+            popup.style.display = 'flex';
+    
+            setTimeout(() => {
+                popup.style.display = 'none';
+            }, 5000);
+        }
+    </script>
+    
+
+</body>
+
+</html>
+

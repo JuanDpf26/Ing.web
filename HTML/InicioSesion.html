@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio de sesión</title>
+    <link rel="stylesheet" href="../CSS/InicioSesion.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+
+    <div id="popupMessage" class="popup-message"></div>
+
+    <div class="login-container">
+        <div class="image-container">
+            <img src="../IMAGES/header.jpeg" alt="Imagen de Login">
+        </div>
+
+        <div class="container">
+            <form action="../PHP/IniciarSesion.php" method="POST">
+                <h1>INICIO DE SESIÓN</h1>
+                <hr>
+                <label for="correo">
+                    <i class="fas fa-envelope"></i> Correo
+                </label>
+                <input type="email" name="correo" placeholder="Correo Electrónico" required>
+
+                <label for="password">
+                    <i class="fas fa-lock"></i> Contraseña
+                </label>
+                <input type="password" name="password" placeholder="Contraseña" required>
+                <hr>
+                <div class="form-actions">
+                    <button type="submit" class="boton">Iniciar sesión</button>
+                    <a href="../HTML/Registro.html" class="link-register">¿No tienes cuenta? Regístrate</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        
+        const urlParams = new URLSearchParams(window.location.search);
+        const message = urlParams.get('message');
+
+       
+        if (message) {
+            const popup = document.getElementById('popupMessage');
+            const icon = document.createElement('i');
+
+           
+            if (message.toLowerCase().includes('exitoso')) {
+                popup.classList.add('success'); 
+                icon.className = 'fas fa-check-circle'; 
+            } else {
+                popup.classList.add('error'); 
+                icon.className = 'fas fa-exclamation-circle'; 
+            }
+
+        
+            popup.appendChild(icon);
+            popup.appendChild(document.createTextNode(decodeURIComponent(message)));
+
+         
+            popup.style.display = 'flex';
+
+            
+            setTimeout(() => {
+                popup.style.display = 'none';
+            }, 5000);
+        }
+    </script>
+    
+
+</body>
+
+</html>

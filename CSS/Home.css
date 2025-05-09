@@ -1,0 +1,288 @@
+/* Reset and global styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style: none;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.6;
+    color: #323232;
+    background-color: #FAFAFA;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Header */
+.header {
+    background-color: #323232;
+    color: white;
+    padding: 20px 0;
+}
+
+.menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+.logo {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #f8ec04;
+    text-transform: uppercase;
+}
+
+.menu .navbar ul {
+    display: flex;
+    gap: 20px;
+}
+
+.menu .navbar ul li a {
+    font-size: 1rem;
+    color: white;
+    transition: color 0.3s ease;
+}
+
+.menu .navbar ul li a:hover {
+    color: #f8ec04;
+}
+
+.menu-icono {
+    width: 25px;
+    display: none;
+}
+
+#menu {
+    display: none;
+}
+
+.menu label {
+    cursor: pointer;
+    display: none;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 30px;
+    padding-top: 40px;
+    text-align: center;
+}
+
+.header-img {
+    width: 100px; /* Ajusta este valor a lo que consideres apropiado */
+    height: auto;
+    margin-left: 100px;
+    overflow: hidden;
+}
+
+.about-txt1 {
+    flex: 1;
+    font-size: 1.2rem;
+    color: white;
+    font-weight: bold;
+    text-align: justify;
+}
+
+/* About section */
+.about {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    padding: 60px 0;
+}
+
+.about-img {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.about-img img {
+    max-width: 100%;
+    border-radius: 15px;
+}
+
+.about-txt {
+    flex: 1;
+}
+
+.about-txt h2 {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+}
+
+.about-txt h3 {
+    color: #f8ec04;
+    margin-top: 20px;
+}
+
+.about-txt p {
+    color: #4a4a4a;
+    text-align: justify;
+    margin-bottom: 10px;
+}
+
+/* Servicios */
+.servicios {
+    background-color: #f5f5f5;
+    padding: 80px 0;
+    text-align: center;
+}
+
+.servicios h2 {
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+    color: #323232;
+}
+
+.servicios-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+}
+
+.servicio-1 {
+    background-color: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    flex: 1 1 250px;
+    max-width: 300px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.servicio-1:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 0 30px rgba(0,0,0,0.2);
+}
+
+.servicio-1 i {
+    font-size: 2rem;
+    color: #f8ec04;
+    margin-bottom: 10px;
+}
+
+.servicio-1 h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+.servicio-1 p {
+    color: #666;
+}
+
+/* Footer */
+footer {
+    background-color: #323232;
+    color: white;
+    padding: 40px 0;
+    text-align: center;
+}
+
+.footer-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.footer-logo .logo {
+    color: #f8ec04;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.footer-links ul,
+.footer-social ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links a,
+.footer-social a {
+    color: white;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+}
+
+.footer-links a:hover,
+.footer-social a:hover {
+    color: #f8ec04;
+}
+
+.footer-social i {
+    font-size: 1.5rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .header-content,
+    .about {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .menu label,
+    .menu-icono {
+        display: block;
+    }
+
+    .menu .navbar {
+        position: absolute;
+        background-color: #323232;
+        top: 60px;
+        left: 0;
+        right: 0;
+        display: none;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .menu .navbar ul {
+        flex-direction: column;
+    }
+
+    #menu:checked ~ .navbar {
+        display: flex;
+    }
+
+    .servicios-content {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+/* Utility classes */
+a {
+    transition: color 0.3s ease;
+}
+
+a:hover,
+a:active {
+    color: #f8ec04;
+}
+
+
+
