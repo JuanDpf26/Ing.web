@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Módulo Clientes - ERP AbogaTech</title>
+    <link rel="stylesheet" href="../CSS/Clientes.css">
+    <style>
+        .section { display: none; }
+        .section.active { display: block; }
+    </style>
+</head>
+<body>
+
+<div class="sidebar">
+    <h2>🟡 ERP RLV</h2>
+    <a href="#" onclick="mostrarSeccion('bienvenida')">🏠 Inicio</a>
+    <a href="#" onclick="mostrarSeccion('crear')">➕ Crear Cliente</a>
+    <a href="#" onclick="mostrarSeccion('buscar')">🔍 Buscar Cliente</a>
+    <a href="#" onclick="mostrarSeccion('lista')">📋 Ver Todos</a>
+    <a href="../HTML/Módulos.html">⬅ Volver al Panel</a>
+</div>
+
+<div class="main">
+    <section id="bienvenida" class="section active">
+        <h1>Módulo Clientes - ERP AbogaTech</h1>
+        <p>Usa el menú lateral para gestionar los clientes.</p>
+    </section>
+
+    <section id="crear" class="section">
+        <h2>Crear Cliente</h2>
+        <form method="POST" action="clientes.php">
+            <input type="text" name="id" placeholder="ID" required>
+            <input type="text" name="nombre" placeholder="Nombre" required>
+            <input type="number" name="edad" placeholder="Edad" required>
+            <input type="email" name="correo" placeholder="Correo" required>
+            <input type="password" name="password" placeholder="Contraseña" required>
+            <button type="submit" name="crear">Guardar</button>
+        </form>
+    </section>
+
+    <section id="buscar" class="section">
+        <h2>Buscar Cliente por ID</h2>
+        <form method="POST" action="clientes.php">
+            <input type="text" name="buscar_id" placeholder="ID" required>
+            <button type="submit" name="buscar">Buscar</button>
+        </form>
+
+        <?php if ($cliente_buscado): ?>
+        <h3>Actualizar Cliente</h3>
+        <form method="POST" action="clientes.php">
+            <input type="hidden" name="id" value="<?= htmlspecialchars($cliente_buscado['Id']) ?>">
+            <input type="text" name="nombre" value="<?= htmlspecialchars($cliente_buscado['Nombre']) ?>" required>
+            <input type="number" name="edad" value="<?= (int)$cliente_buscado['Edad'] ?>" required>
+            <input type="email" name="correo" value="<?= htmlspecialchars($cliente_buscado['Correo']) ?>" required>
+            <button type="submit" name="actualizar">Actualizar</button>
+        </form>
+        <?php endif; ?>
+    </section>
+
+    <section id="lista" class="section">
+        <h2>Listado de Clientes</h2>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Edad</th>
+                <th>Correo</th>
+                <th>Acciones</th>
+            </tr>
+            <?php while ($row = $result_clientes->fetch_assoc()): ?>
+            <tr>
+                <td><?= htmlspecialchars($row['Id']) ?></td>
+                <td><?= htmlspecialchars($row['Nombre']) ?></td>
+                <td><?= (int)$row['Edad'] ?></td>
+                <td><?= htmlspecialchars($row['Correo']) ?></td>
+                <td>
+                    <a href="clientes.php?eliminar=<?= urlencode($row['Id']) ?>" class="btn-delete"
+                       onclick="return confirm('¿Eliminar este cliente?')">Eliminar</a>
+                </td>
+            </tr>
+            <?php endwhile; ?>
+        </table>
+    </section>
+</div>
+
+<script>
+function mostrarSeccion(id) {
+    document.querySelectorAll('.section').forEach(seccion => seccion.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+}
+</script>
+
+</body>
+</html>
+      
