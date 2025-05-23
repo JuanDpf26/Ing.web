@@ -63,7 +63,7 @@ $sql = "INSERT INTO citas (id, nombre_cliente, correo, servicio, precio, duracio
 
 if ($conn->query($sql) === TRUE) {
 
-    header("Location: confirmacion_cita.php?message=" . urlencode("Cita Programada") . "&id=$id&nombre_cliente=$nombre_cliente&servicio=$servicio&precio=$precio&duracion=$duracion&fecha_reunion=$fecha_reunion&hora_reunion=$hora_reunion&nombre_abogado=$nombre_abogado&especialidad_abogado=$especialidad_abogado");
+    header("Location: Confirmacion_cita.php?message=" . urlencode("Cita Programada") . "&id=$id&nombre_cliente=$nombre_cliente&servicio=$servicio&precio=$precio&duracion=$duracion&fecha_reunion=$fecha_reunion&hora_reunion=$hora_reunion&nombre_abogado=$nombre_abogado&especialidad_abogado=$especialidad_abogado");
     exit();
 } else {
     

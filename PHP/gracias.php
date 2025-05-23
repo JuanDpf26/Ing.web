@@ -1,21 +1,21 @@
 <?php
-
 $servername = "localhost";
 $username = "root";
 $password = "";
 $dbname = "bufete2";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
-
 if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
 
-$factura_id = $_GET['factura_id'];
+$factura_id = $_GET['factura_id'] ?? '';
 
-
-$sql = "SELECT * FROM facturas WHERE factura_id = '$factura_id'";
-$result = $conn->query($sql);
+$sql = "SELECT * FROM facturas WHERE factura_id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $factura_id);
+$stmt->execute();
+$result = $stmt->get_result();
 
 if ($result->num_rows > 0) {
     $factura = $result->fetch_assoc();
@@ -24,18 +24,21 @@ if ($result->num_rows > 0) {
     $precio = $factura['precio'];
     $estado = $factura['estado'];
 
-    
-    if ($estado == 'Pagada') {
-        
+    if ($estado === 'Pagada') {
         echo "<script>alert('Esta factura ya ha sido pagada previamente.'); window.location.href='gracias.php';</script>";
-        exit(); 
+        exit();
     }
 
-   
-    $update_sql = "UPDATE facturas SET estado = 'Pagada' WHERE factura_id = '$factura_id'";
-    $conn->query($update_sql);
+    $update_sql = "UPDATE facturas SET estado = 'Pagada' WHERE factura_id = ?";
+    $update_stmt = $conn->prepare($update_sql);
+    $update_stmt->bind_param("i", $factura_id);
+    $update_stmt->execute();
+
+    // Limpieza del valor numérico
+    $precio_limpio = floatval(preg_replace('/[^\d.]/', '', $precio));
 } else {
     echo "Factura no encontrada.";
+    exit();
 }
 
 $conn->close();
@@ -45,15 +48,12 @@ $conn->close();
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="..//CSS/gracias.css">
     <title>Gracias por tu Pago</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
             margin: 0;
-            padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(to bottom, #fffbea, #fffde6);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -61,48 +61,57 @@ $conn->close();
         }
         .gracias-container {
             background-color: #fff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 30px 40px;
+            border-radius: 16px;
+            box-shadow: 0 6px 20px rgba(255, 200, 0, 0.3);
             text-align: center;
-            width: 80%;
-            max-width: 500px;
+            max-width: 480px;
+            border: 1px solid #ffe97f;
         }
-        .gracias-container h1 {
-            font-size: 2em;
-            color: #28a745;
-            margin-bottom: 20px;
+        h1 {
+            color: #f7b500;
+            margin-bottom: 10px;
+            font-size: 28px;
         }
-        .gracias-container p {
-            font-size: 1.2em;
+        .descripcion {
+            color: #444;
+            margin-bottom: 10px;
+        }
+        .detalle {
+            font-weight: 600;
+            color: #555;
+            margin: 15px 0;
+        }
+        .detalle span {
             color: #333;
         }
-        .gracias-container .details {
-            margin: 20px 0;
-            font-size: 1.1em;
-            color: #555;
-        }
-        .gracias-container .btn {
+        .btn {
             display: inline-block;
-            padding: 10px 20px;
-            font-size: 1em;
-            background-color: #007bff;
+            margin-top: 25px;
+            padding: 12px 22px;
+            background-color: #f7b500;
             color: #fff;
+            border: none;
+            border-radius: 8px;
             text-decoration: none;
-            border-radius: 5px;
-            margin-top: 20px;
+            font-weight: bold;
+            transition: background 0.3s ease;
         }
-        .gracias-container .btn:hover {
-            background-color: #0056b3;
+        .btn:hover {
+            background-color: #e3a000;
         }
     </style>
 </head>
 <body>
     <div class="gracias-container">
-        <h1>¡Su factura a sido pagada, <?php echo htmlspecialchars($nombre_cliente); ?>!</h1>
-        <p>Tu factura de <strong><?php echo htmlspecialchars($servicio); ?></strong> por <p><strong>Costo del Servicio:</strong> <?php echo htmlspecialchars($precio); ?> ?></strong> ha sido pagada exitosamente.</p>
-        <p class="details">Estado de la factura: <strong>Pagada</strong></p>
-        <a href="..//HTML/home.html" class="btn">Volver a la página principal</a>
+        <h1>¡Gracias, <?php echo htmlspecialchars($nombre_cliente); ?>!</h1>
+        <p class="descripcion">Has pagado la factura por el servicio de:</p>
+        <p class="detalle">📄 <span><?php echo htmlspecialchars($servicio); ?></span></p>
+        <p class="detalle">💰 Costo: <span>$<?php echo number_format($precio_limpio, 2); ?></span></p>
+        <p class="detalle">📌 Estado de la factura: <span>Pagada</span></p>
+        <a class="btn" href="../HTML/home.html">🏁 Finalizar y Regresar</a>
     </div>
 </body>
 </html>
+
+
