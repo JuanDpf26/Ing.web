@@ -1,233 +1,312 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Empleados - ERP AbogaTech</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <title>Gestión de Empleados - ERP AbogaTech</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../CSS/empleados.css" />
   <style>
-    * { box-sizing: border-box; }
     body {
-      margin: 0;
-      font-family: 'Inter', sans-serif;
       display: flex;
-      height: 100vh;
-      background-color: #f4f4f4;
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      background-color: #f8f8f8;
     }
     .sidebar {
-      width: 240px;
-      background-color: #171729;
+      width: 220px;
+      background-color: #0d0d22;
       color: white;
-      padding: 30px 20px;
-      display: flex;
-      flex-direction: column;
+      padding: 20px;
+      min-height: 100vh;
     }
     .sidebar h2 {
-      color: #f5c518;
-      font-size: 22px;
-      margin-bottom: 40px;
+      color: #FFD700;
     }
     .sidebar ul {
       list-style: none;
       padding: 0;
     }
     .sidebar li {
-      font-size: 16px;
-      padding: 12px;
+      padding: 10px;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      transition: background 0.2s;
     }
     .sidebar li:hover {
-      background-color: #2a2a40;
-      border-radius: 6px;
-    }
-    .sidebar li span {
-      margin-right: 10px;
-      font-size: 20px;
+      background-color: #1e1e3f;
     }
     .main {
-      flex: 1;
+      flex-grow: 1;
       padding: 40px;
-      overflow-y: auto;
     }
-    h2 {
-      font-size: 26px;
-      color: #222;
+    .formulario label {
+      display: block;
+      margin-top: 10px;
     }
-    p {
-      color: #444;
-      font-size: 16px;
-    }
-    input, select {
-      padding: 8px;
+    .formulario input,
+    .formulario select,
+    .formulario button {
       width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border-radius: 6px;
       border: 1px solid #ccc;
-      border-radius: 5px;
-      margin-bottom: 10px;
+      box-sizing: border-box;
     }
-    button {
-      padding: 8px 16px;
+    .formulario button {
+      background-color: #FFD700;
+      color: black;
+      font-weight: bold;
+      margin-top: 15px;
       border: none;
-      border-radius: 5px;
-      margin-right: 5px;
       cursor: pointer;
-      font-weight: 600;
+      transition: background-color 0.3s;
     }
-    .btn-update { background-color: #4CAF50; color: white; }
-    .btn-delete { background-color: #E53935; color: white; }
-    .btn-update:hover { background-color: #43a047; }
-    .btn-delete:hover { background-color: #d32f2f; }
-    .btn-create { background-color: #2196F3; color: white; margin-bottom: 20px; }
+    .formulario button:hover {
+      background-color: #e6c200;
+    }
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 30px;
-      background: white;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      border-radius: 8px;
-      overflow: hidden;
+      margin-top: 20px;
     }
-    th, td {
-      padding: 14px;
+    th,
+    td {
+      border: 1px solid #ccc;
+      padding: 8px;
       text-align: left;
-      border-bottom: 1px solid #eee;
+      vertical-align: middle;
     }
-    th { background-color: #f5f5f5; }
+    input[type="date"] {
+      padding: 6px;
+    }
+    .btn-update {
+      background-color: #4CAF50;
+      color: white;
+      margin-right: 5px;
+      border: none;
+      padding: 6px 10px;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background-color 0.3s;
+    }
+    .btn-update:hover {
+      background-color: #45a049;
+    }
+    .btn-delete {
+      background-color: #f44336;
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background-color 0.3s;
+    }
+    .btn-delete:hover {
+      background-color: #d32f2f;
+    }
   </style>
 </head>
 <body>
-<div class="sidebar">
-  <h2>🔶 ERP RLV</h2>
-  <ul>
-    <li onclick="mostrarInicio()"><span>🏠</span>Inicio</li>
-    <li onclick="cargarEmpleados()"><span>🔍</span>Consultar Empleados</li>
-    <li onclick="mostrarFormularioEmpleado()"><span>➕</span>Crear Empleado</li>
-    <li onclick="volverAlPanel()"><span>↩️</span>Volver al Panel</li>
-  </ul>
-</div>
-<div class="main" id="contenido">
-  <h2>Módulo Empleados - ERP AbogaTech</h2>
-  <p>Usa el menú lateral para gestionar los abogados del bufete.</p>
-</div>
-<script>
-function mostrarInicio() {
-  document.getElementById('contenido').innerHTML = `
+  <div class="sidebar">
+    <h2>🧑‍⚖️ ERP RLV</h2>
+    <ul>
+      <li onclick="mostrarInicio()">🏠 Inicio</li>
+      <li onclick="mostrarFormulario()">📝 Crear Empleado</li>
+      <li onclick="cargarEmpleados()">📋 Consultar Empleados</li>
+      <li onclick="mostrarNomina()">💰 Calcular Nómina</li>
+      <li onclick="volverAlPanel()">↩️ Volver al Panel</li>
+    </ul>
+  </div>
+  <div class="main" id="contenido">
     <h2>Módulo Empleados - ERP AbogaTech</h2>
-    <p>Usa el menú lateral para gestionar los abogados del bufete.</p>
-  `;
-}
-function volverAlPanel() {
-  window.location.href = '../HTML/Módulos.html';
-}
-function mostrarFormularioEmpleado() {
-  document.getElementById('contenido').innerHTML = `
-    <h2>Registrar Nuevo Abogado</h2>
-    <input id="nombre" placeholder="Nombre">
-    <input id="especialidad" placeholder="Especialidad">
-    <input id="telefono" placeholder="Teléfono">
-    <input id="correo" placeholder="Correo Electrónico">
-    <input id="fecha" type="date" placeholder="Fecha de Contratación">
-    <button class="btn-create" onclick="crearAbogado()">Crear</button>
-  `;
-}
-function crearAbogado() {
-  const nombre = document.getElementById("nombre").value;
-  const especialidad = document.getElementById("especialidad").value;
-  const telefono = document.getElementById("telefono").value;
-  const correo = document.getElementById("correo").value;
-  const fecha = document.getElementById("fecha").value;
+    <p>Usa el menú lateral para gestionar a los empleados del bufete.</p>
+  </div>
 
-  if (!nombre || !especialidad || !telefono || !correo || !fecha) {
-    alert("Todos los campos son obligatorios.");
-    return;
-  }
-  const data = new URLSearchParams();
-  data.append('nombre', nombre);
-  data.append('especialidad', especialidad);
-  data.append('telefono', telefono);
-  data.append('correo', correo);
-  data.append('fecha_contratacion', fecha);
+  <script>
+    function mostrarInicio() {
+      document.getElementById('contenido').innerHTML = `
+        <h2>Módulo Empleados - ERP AbogaTech</h2>
+        <p>Usa el menú lateral para gestionar a los empleados del bufete.</p>
+      `;
+    }
 
-  fetch('../PHP_ABOGADOS/crear_abogado.php', {
-    method: 'POST', body: data
-  })
-  .then(res => res.text())
-  .then(msg => {
-    alert(msg);
-    cargarEmpleados();
-  });
-}
-function cargarEmpleados() {
-  fetch('../PHP_ABOGADOS/obtener_abogados.php')
-    .then(response => response.json())
-    .then(abogados => {
-      let html = '<h2>Lista de Abogados</h2>';
-      if (abogados.length === 0) {
-        html += '<p>No hay empleados registrados.</p>';
-      } else {
-        html += '<table><tr><th>ID</th><th>Nombre</th><th>Especialidad</th><th>Teléfono</th><th>Correo</th><th>Fecha Contratación</th><th>Acciones</th></tr>';
-        abogados.forEach(a => {
-          html += `
-            <tr>
-              <td>${a.id}</td>
-              <td><input value="${a.nombre}" id="nombre-${a.id}"></td>
-              <td><input value="${a.especialidad}" id="especialidad-${a.id}"></td>
-              <td><input value="${a.telefono}" id="telefono-${a.id}"></td>
-              <td><input value="${a.correo}" id="correo-${a.id}"></td>
-              <td><input type="date" value="${a.fecha_contratacion}" id="fecha-${a.id}"></td>
-              <td>
-                <button class="btn-update" onclick="actualizarAbogado(${a.id})">Actualizar</button>
-                <button class="btn-delete" onclick="eliminarAbogado(${a.id})">Eliminar</button>
-              </td>
-            </tr>
-          `;
+    function volverAlPanel() {
+      window.location.href = '../HTML/Módulos.html';
+    }
+
+    function mostrarFormulario() {
+      document.getElementById('contenido').innerHTML = `
+        <h2>Registrar Nuevo Abogado</h2>
+        <form id="formAbogado" class="formulario">
+          <label>Nombre:</label>
+          <input type="text" id="nombre" required />
+          
+          <label>Especialidad:</label>
+          <select id="especialidad" required>
+            <option value="">Selecciona una opción</option>
+            <option value="Asesoría Jurídica en Siniestros Viales">Asesoría Jurídica en Siniestros Viales</option>
+            <option value="Implementación y Manejo del PESV">Implementación y Manejo del PESV</option>
+            <option value="Reconstrucción Técnica y Analítica de Siniestros Viales">Reconstrucción Técnica y Analítica de Siniestros Viales</option>
+            <option value="Servicios Funerarios en Siniestros Viales">Servicios Funerarios en Siniestros Viales</option>
+            <option value="Reclamaciones Ante las Aseguradoras">Reclamaciones Ante las Aseguradoras</option>
+          </select>
+          
+          <label>Teléfono:</label>
+          <input type="text" id="telefono" required />
+          <label>Correo:</label>
+          <input type="email" id="correo" required />
+          <label>Fecha de Contratación:</label>
+          <input type="date" id="fecha" required />
+          <button type="submit">Guardar</button>
+        </form>
+      `;
+
+      document.getElementById('formAbogado').onsubmit = (e) => {
+        e.preventDefault();
+        const datos = new URLSearchParams();
+        datos.append('nombre', document.getElementById('nombre').value);
+        datos.append('especialidad', document.getElementById('especialidad').value);
+        datos.append('telefono', document.getElementById('telefono').value);
+        datos.append('correo', document.getElementById('correo').value);
+        datos.append('fecha', document.getElementById('fecha').value);
+
+        fetch('../PHP_EMPLEADOS/crear_abogado.php', {
+          method: 'POST',
+          body: datos
+        })
+        .then(res => res.text())
+        .then(msg => {
+          alert(msg);
+          cargarEmpleados();
         });
-        html += '</table>';
-      }
-      document.getElementById('contenido').innerHTML = html;
-    });
-}
-function actualizarAbogado(id) {
-  const nombre = document.getElementById(`nombre-${id}`).value;
-  const especialidad = document.getElementById(`especialidad-${id}`).value;
-  const telefono = document.getElementById(`telefono-${id}`).value;
-  const correo = document.getElementById(`correo-${id}`).value;
-  const fecha = document.getElementById(`fecha-${id}`).value;
+      };
+    }
 
-  const data = new URLSearchParams();
-  data.append('id', id);
-  data.append('nombre', nombre);
-  data.append('especialidad', especialidad);
-  data.append('telefono', telefono);
-  data.append('correo', correo);
-  data.append('fecha_contratacion', fecha);
+    function cargarEmpleados() {
+      fetch('../PHP_EMPLEADOS/consultar_abogado.php')
+        .then(res => res.json())
+        .then(empleados => {
+          let html = `<h2>Lista de Empleados</h2>`;
+          if (empleados.length === 0) {
+            html += `<p>No hay empleados registrados.</p>`;
+          } else {
+            html += `
+              <table>
+                <tr>
+                  <th>ID</th>
+                  <th>Nombre</th>
+                  <th>Especialidad</th>
+                  <th>Teléfono</th>
+                  <th>Correo</th>
+                  <th>Fecha</th>
+                  <th>Acciones</th>
+                </tr>
+            `;
+            empleados.forEach(e => {
+              html += `
+                <tr>
+                  <td>${e.id}</td>
+                  <td><input value="${e.nombre}" id="nombre-${e.id}" /></td>
+                  <td>
+                    <select id="especialidad-${e.id}">
+                      <option value="Asesoría Jurídica en Siniestros Viales" ${e.especialidad === 'Asesoría Jurídica en Siniestros Viales' ? 'selected' : ''}>Asesoría Jurídica en Siniestros Viales</option>
+                      <option value="Implementación y Manejo del PESV" ${e.especialidad === 'Implementación y Manejo del PESV' ? 'selected' : ''}>Implementación y Manejo del PESV</option>
+                      <option value="Reconstrucción Técnica y Analítica de Siniestros Viales" ${e.especialidad === 'Reconstrucción Técnica y Analítica de Siniestros Viales' ? 'selected' : ''}>Reconstrucción Técnica y Analítica de Siniestros Viales</option>
+                      <option value="Servicios Funerarios en Siniestros Viales" ${e.especialidad === 'Servicios Funerarios en Siniestros Viales' ? 'selected' : ''}>Servicios Funerarios en Siniestros Viales</option>
+                      <option value="Reclamaciones Ante las Aseguradoras" ${e.especialidad === 'Reclamaciones Ante las Aseguradoras' ? 'selected' : ''}>Reclamaciones Ante las Aseguradoras</option>
+                    </select>
+                  </td>
+                  <td><input value="${e.telefono}" id="telefono-${e.id}" /></td>
+                  <td><input value="${e.correo}" id="correo-${e.id}" /></td>
+                  <td><input type="date" value="${e.fecha_contratacion}" id="fecha-${e.id}" /></td>
+                  <td>
+                    <button class="btn-update" onclick="actualizarAbogado(${e.id})">Actualizar</button>
+                    <button class="btn-delete" onclick="eliminarAbogado(${e.id})">Eliminar</button>
+                  </td>
+                </tr>
+              `;
+            });
+            html += `</table>`;
+          }
+          document.getElementById('contenido').innerHTML = html;
+        });
+    }
 
-  fetch('../PHP_ABOGADOS/actualizar_abogado.php', {
-    method: 'POST', body: data
-  })
-  .then(res => res.text())
-  .then(msg => {
-    alert(msg);
-    cargarEmpleados();
-  });
-}
-function eliminarAbogado(id) {
-  if (!confirm("¿Deseas eliminar este abogado?")) return;
+    function actualizarAbogado(id) {
+      const datos = new URLSearchParams();
+      datos.append('id', id);
+      datos.append('nombre', document.getElementById(`nombre-${id}`).value);
+      datos.append('especialidad', document.getElementById(`especialidad-${id}`).value);
+      datos.append('telefono', document.getElementById(`telefono-${id}`).value);
+      datos.append('correo', document.getElementById(`correo-${id}`).value);
+      datos.append('fecha', document.getElementById(`fecha-${id}`).value);
 
-  const data = new URLSearchParams();
-  data.append('id', id);
-  fetch('../PHP_ABOGADOS/eliminar_abogado.php', {
-    method: 'POST', body: data
-  })
-  .then(res => res.text())
-  .then(msg => {
-    alert(msg);
-    cargarEmpleados();
-  });
-}
-</script>
+      fetch('../PHP_EMPLEADOS/actualizar_abogado.php', {
+        method: 'POST',
+        body: datos
+      })
+      .then(res => res.text())
+      .then(msg => {
+        alert(msg);
+        cargarEmpleados();
+      });
+    }
+
+    function eliminarAbogado(id) {
+      if (!confirm("¿Eliminar este abogado?")) return;
+
+      const datos = new URLSearchParams();
+      datos.append('id', id);
+
+      fetch('../PHP_EMPLEADOS/eliminar_abogado.php', {
+        method: 'POST',
+        body: datos
+      })
+      .then(res => res.text())
+      .then(msg => {
+        alert(msg);
+        cargarEmpleados();
+      });
+    }
+
+    function mostrarNomina() {
+      document.getElementById('contenido').innerHTML = `
+        <h2>Calcular Nómina</h2>
+        <form id="formNomina" class="formulario">
+          <label>ID Abogado:</label>
+          <input type="number" id="abogado_id" required />
+          <label>Salario Base:</label>
+          <input type="number" id="salario" step="0.01" required />
+          <label>Bonificaciones:</label>
+          <input type="number" id="bono" step="0.01" />
+          <label>Descuentos:</label>
+          <input type="number" id="desc" step="0.01" />
+          <button type="submit">Calcular y Guardar</button>
+        </form>
+      `;
+
+      document.getElementById('formNomina').onsubmit = (e) => {
+        e.preventDefault();
+        const datos = new URLSearchParams();
+        datos.append('abogado_id', document.getElementById('abogado_id').value);
+        datos.append('salario', document.getElementById('salario').value);
+        datos.append('bono', document.getElementById('bono').value);
+        datos.append('desc', document.getElementById('desc').value);
+
+        fetch('../PHP_EMPLEADOS/calcular_nomina.php', {
+          method: 'POST',
+          body: datos
+        })
+        .then(res => res.text())
+        .then(msg => {
+          alert(msg);
+        });
+      };
+    }
+  </script>
 </body>
 </html>
+
+
+
 
 
