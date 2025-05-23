@@ -1,94 +1,401 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Módulo Clientes - ERP AbogaTech</title>
-    <link rel="stylesheet" href="../CSS/Clientes.css">
+    <meta charset="UTF-8" />
+    <title>Módulo Facturas y Pagos - ERP RLV</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
     <style>
-        .section { display: none; }
-        .section.active { display: block; }
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            height: 100vh;
+            background-color: #f5f5f5;
+        }
+        .sidebar {
+            width: 240px;
+            background-color: #0d0d26;
+            color: white;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        .sidebar h2 {
+            color: #f5c518;
+            font-size: 22px;
+            margin-bottom: 40px;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .sidebar li {
+            font-size: 16px;
+            padding: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: background 0.2s;
+            user-select: none;
+        }
+        .sidebar li:hover {
+            background-color: #1f1f3b;
+            border-radius: 6px;
+        }
+        .sidebar li span {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+        .main {
+            flex: 1;
+            padding: 40px 60px;
+            overflow-y: auto;
+        }
+        h2 {
+            font-size: 26px;
+            color: #222;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        table {
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+            border-collapse: collapse;
+            margin-top: 30px;
+            background: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 14px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        th {
+            background-color: #f5f5f5;
+        }
+        input[type="text"], input[type="number"], input[type="date"], input[type="time"], select {
+            padding: 6px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        input[readonly] {
+            background-color: #e9e9e9;
+            cursor: not-allowed;
+        }
+        button {
+            padding: 6px 14px;
+            border: none;
+            border-radius: 5px;
+            margin-right: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+        .btn-update {
+            background-color: #f5c518;
+            color: black;
+        }
+        .btn-update:hover {
+            background-color: #e0b000;
+        }
+        .btn-delete {
+            background-color: #E53935;
+            color: white;
+        }
+        .btn-delete:hover {
+            background-color: #d32f2f;
+        }
     </style>
 </head>
 <body>
 
 <div class="sidebar">
-    <h2>🟡 ERP RLV</h2>
-    <a href="#" onclick="mostrarSeccion('bienvenida')">🏠 Inicio</a>
-    <a href="#" onclick="mostrarSeccion('crear')">➕ Crear Cliente</a>
-    <a href="#" onclick="mostrarSeccion('buscar')">🔍 Buscar Cliente</a>
-    <a href="#" onclick="mostrarSeccion('lista')">📋 Ver Todos</a>
-    <a href="../HTML/Módulos.html">⬅ Volver al Panel</a>
+    <h2>🔶 MÓDULO FACTURAS/PAGOS</h2>
+    <ul>
+        <li onclick="mostrarSeccion('facturas')"><span>📄</span>Consultar Facturas</li>
+        <li onclick="mostrarSeccion('pagos')"><span>💳</span>Consultar Pagos</li>
+        <li onclick="volverAlPanel()"><span>↩️</span>Volver al Panel</li>
+    </ul>
 </div>
 
 <div class="main">
-    <section id="bienvenida" class="section active">
-        <h1>Módulo Clientes - ERP AbogaTech</h1>
-        <p>Usa el menú lateral para gestionar los clientes.</p>
+    <section id="facturas" class="section active">
+        <h2>Facturas</h2>
+        <div id="lista-facturas">Cargando facturas...</div>
     </section>
 
-    <section id="crear" class="section">
-        <h2>Crear Cliente</h2>
-        <form method="POST" action="clientes.php">
-            <input type="text" name="id" placeholder="ID" required>
-            <input type="text" name="nombre" placeholder="Nombre" required>
-            <input type="number" name="edad" placeholder="Edad" required>
-            <input type="email" name="correo" placeholder="Correo" required>
-            <input type="password" name="password" placeholder="Contraseña" required>
-            <button type="submit" name="crear">Guardar</button>
-        </form>
-    </section>
-
-    <section id="buscar" class="section">
-        <h2>Buscar Cliente por ID</h2>
-        <form method="POST" action="clientes.php">
-            <input type="text" name="buscar_id" placeholder="ID" required>
-            <button type="submit" name="buscar">Buscar</button>
-        </form>
-
-        <?php if ($cliente_buscado): ?>
-        <h3>Actualizar Cliente</h3>
-        <form method="POST" action="clientes.php">
-            <input type="hidden" name="id" value="<?= htmlspecialchars($cliente_buscado['Id']) ?>">
-            <input type="text" name="nombre" value="<?= htmlspecialchars($cliente_buscado['Nombre']) ?>" required>
-            <input type="number" name="edad" value="<?= (int)$cliente_buscado['Edad'] ?>" required>
-            <input type="email" name="correo" value="<?= htmlspecialchars($cliente_buscado['Correo']) ?>" required>
-            <button type="submit" name="actualizar">Actualizar</button>
-        </form>
-        <?php endif; ?>
-    </section>
-
-    <section id="lista" class="section">
-        <h2>Listado de Clientes</h2>
-        <table>
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Edad</th>
-                <th>Correo</th>
-                <th>Acciones</th>
-            </tr>
-            <?php while ($row = $result_clientes->fetch_assoc()): ?>
-            <tr>
-                <td><?= htmlspecialchars($row['Id']) ?></td>
-                <td><?= htmlspecialchars($row['Nombre']) ?></td>
-                <td><?= (int)$row['Edad'] ?></td>
-                <td><?= htmlspecialchars($row['Correo']) ?></td>
-                <td>
-                    <a href="clientes.php?eliminar=<?= urlencode($row['Id']) ?>" class="btn-delete"
-                       onclick="return confirm('¿Eliminar este cliente?')">Eliminar</a>
-                </td>
-            </tr>
-            <?php endwhile; ?>
-        </table>
+    <section id="pagos" class="section" style="display:none;">
+        <h2>Pagos</h2>
+        <div id="lista-pagos">Cargando pagos...</div>
     </section>
 </div>
 
 <script>
-function mostrarSeccion(id) {
-    document.querySelectorAll('.section').forEach(seccion => seccion.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
+    function mostrarSeccion(id) {
+        document.querySelectorAll('.section').forEach(s => {
+            s.style.display = 'none';
+            s.classList.remove('active');
+        });
+        const seccion = document.getElementById(id);
+        if (seccion) {
+            seccion.style.display = 'block';
+            seccion.classList.add('active');
+        }
+
+        if (id === 'facturas') {
+            cargarFacturas();
+        } else if (id === 'pagos') {
+            cargarPagos();
+        }
+    }
+
+    function volverAlPanel() {
+        window.location.href = '../HTML/Módulos.html';
+    }
+
+    // Cargar facturas desde PHP
+    function cargarFacturas() {
+        fetch('../PHP_VENTAS/obtener_facturas.php')
+        .then(res => res.json())
+        .then(facturas => {
+            if (!facturas || facturas.length === 0) {
+                document.getElementById('lista-facturas').innerHTML = '<p>No hay facturas registradas.</p>';
+                return;
+            }
+            let html = `<table>
+                <tr>
+                    <th>ID</th>
+                    <th>ID Cliente</th>
+                    <th>Cliente</th>
+                    <th>Servicio</th>
+                    <th>Precio</th>
+                    <th>Fecha Reunión</th>
+                    <th>Hora Reunión</th>
+                    <th>Fecha Creación</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>`;
+            facturas.forEach(f => {
+                html += `<tr>
+                    <td>${f.factura_id}</td>
+                    <td><input type="number" id="clienteid-${f.factura_id}" value="${f.cliente_id}" readonly /></td>
+                    <td><input type="text" id="cliente-${f.factura_id}" value="${f.nombre_cliente}" /></td>
+                    <td><input type="text" id="servicio-${f.factura_id}" value="${f.servicio}" /></td>
+                    <td><input type="number" id="precio-${f.factura_id}" value="${parseFloat(f.precio).toFixed(2)}" step="0.01" /></td>
+                    <td><input type="date" id="fecha-${f.factura_id}" value="${f.fecha_reunion}" /></td>
+                    <td><input type="time" id="hora-${f.factura_id}" value="${f.hora_reunion}" /></td>
+                    <td><input type="date" id="fecha_creacion-${f.factura_id}" value="${f.fecha_creacion.split(' ')[0]}" /></td>
+                    <td>
+                        <select id="estado-${f.factura_id}">
+                            <option value="Pendiente" ${f.estado === 'Pendiente' ? 'selected' : ''}>Pendiente</option>
+                            <option value="Pagada" ${f.estado === 'Pagada' ? 'selected' : ''}>Pagada</option>
+                            <option value="Cancelada" ${f.estado === 'Cancelada' ? 'selected' : ''}>Cancelada</option>
+                        </select>
+                    </td>
+                    <td>
+                        <button class="btn-update" onclick="actualizarFactura(${f.factura_id})">Actualizar</button>
+                        <button class="btn-delete" onclick="eliminarFactura(${f.factura_id})">Eliminar</button>
+                    </td>
+                </tr>`;
+            });
+            html += `</table>`;
+            document.getElementById('lista-facturas').innerHTML = html;
+        })
+        .catch(err => {
+            document.getElementById('lista-facturas').innerHTML = `<p style="color:red;">Error al cargar facturas: ${err.message}</p>`;
+        });
+    }
+
+    // Cargar pagos desde PHP (igual que antes)
+    function cargarFacturas() {
+    fetch('../PHP_VENTAS/obtener_facturas.php')
+    .then(res => res.json())
+    .then(facturas => {
+        if (!facturas || facturas.length === 0) {
+            document.getElementById('lista-facturas').innerHTML = '<p>No hay facturas registradas.</p>';
+            return;
+        }
+        let html = `<table>
+            <tr>
+                <th>ID</th>
+                <th>ID Cliente</th>
+                <th>Cliente</th>
+                <th>Servicio</th>
+                <th>Precio</th>
+                <th>Fecha Reunión</th>
+                <th>Hora Reunión</th>
+                <th>Fecha Creación</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>`;
+        facturas.forEach(f => {
+            html += `<tr>
+                <td>${f.factura_id}</td>
+                <td><input type="number" id="clienteid-${f.factura_id}" value="${f.cliente_id}" readonly /></td>
+                <td><input type="text" id="cliente-${f.factura_id}" value="${f.nombre_cliente}" /></td>
+                <td><input type="text" id="servicio-${f.factura_id}" value="${f.servicio}" /></td>
+                <td><input type="number" id="precio-${f.factura_id}" value="${parseFloat(f.precio).toFixed(2)}" step="0.01" /></td>
+                <td><input type="date" id="fecha-${f.factura_id}" value="${f.fecha_reunion}" /></td>
+                <td><input type="time" id="hora-${f.factura_id}" value="${f.hora_reunion}" /></td>
+                <td><input type="date" id="fecha_creacion-${f.factura_id}" value="${f.fecha_creacion.split(' ')[0]}" /></td>
+                <td>
+                    <select id="estado-${f.factura_id}">
+                        <option value="Pendiente" ${f.estado === 'Pendiente' ? 'selected' : ''}>Pendiente</option>
+                        <option value="Pagada" ${f.estado === 'Pagada' ? 'selected' : ''}>Pagada</option>
+                        <option value="Cancelada" ${f.estado === 'Cancelada' ? 'selected' : ''}>Cancelada</option>
+                    </select>
+                </td>
+                <td>
+                    <button class="btn-update" onclick="actualizarFactura(${f.factura_id})">Actualizar</button>
+                    <button class="btn-delete" onclick="eliminarFactura(${f.factura_id})">Eliminar</button>
+                </td>
+            </tr>`;
+        });
+        html += `</table>`;
+        document.getElementById('lista-facturas').innerHTML = html;
+    })
+    .catch(err => {
+        document.getElementById('lista-facturas').innerHTML = `<p style="color:red;">Error al cargar facturas: ${err.message}</p>`;
+    });
 }
+
+    // Función para formatear fecha y hora para datetime-local
+    function formatDateTimeLocal(fecha) {
+        if (!fecha) return '';
+        const dt = new Date(fecha);
+        const offset = dt.getTimezoneOffset();
+        const localDate = new Date(dt.getTime() - (offset * 60 * 1000));
+        return localDate.toISOString().slice(0, 16);
+    }
+
+    function actualizarFactura(id) {
+    const cliente_id = document.getElementById(`clienteid-${id}`).value.trim();
+    const cliente = document.getElementById(`cliente-${id}`).value.trim();
+    const servicio = document.getElementById(`servicio-${id}`).value.trim();
+    const precio = document.getElementById(`precio-${id}`).value.trim();
+    const fecha = document.getElementById(`fecha-${id}`).value.trim();
+    const hora = document.getElementById(`hora-${id}`).value.trim();
+    const fecha_creacion = document.getElementById(`fecha_creacion-${id}`).value.trim();
+    const estado = document.getElementById(`estado-${id}`).value;
+
+    if (!cliente_id || !cliente || !servicio || !precio || !fecha || !hora || !fecha_creacion || !estado) {
+        alert("Por favor completa todos los campos.");
+        return;
+    }
+
+    const data = new URLSearchParams();
+    data.append('factura_id', id);
+    data.append('cliente_id', cliente_id);
+    data.append('nombre_cliente', cliente);
+    data.append('servicio', servicio);
+    data.append('precio', precio);
+    data.append('fecha_reunion', fecha);
+    data.append('hora_reunion', hora);
+    data.append('fecha_creacion', fecha_creacion);
+    data.append('estado', estado);
+
+    fetch('../PHP_VENTAS/actualizar_facturas.php', {
+        method: 'POST',
+        body: data
+    })
+    .then(res => res.json())
+    .then(res => {
+        if (res.success) {
+            alert("Factura actualizada correctamente.");
+            cargarFacturas();
+        } else {
+            alert("Error al actualizar factura: " + res.message);
+        }
+    })
+    .catch(err => {
+        alert("Error al actualizar factura: " + err.message);
+    });
+}
+
+function eliminarFactura(id) {
+    if (!confirm("¿Seguro que quieres eliminar esta factura?")) return;
+
+    const data = new URLSearchParams();
+    data.append('factura_id', id);
+
+    fetch('../PHP_VENTAS/eliminar_facturas.php', {
+        method: 'POST',
+        body: data
+    })
+    .then(res => res.text())
+    .then(res => {
+        alert(res);
+        cargarFacturas();
+    })
+    .catch(err => {
+        alert("Error al eliminar factura: " + err.message);
+    });
+}
+
+    // Actualizar pago (sin cambios respecto a antes)
+    function actualizarPago(id) {
+        const factura_id = document.getElementById(`factura-pago-${id}`).value.trim();
+        const metodo_pago = document.getElementById(`metodo-pago-${id}`).value.trim();
+        const fecha_pago = document.getElementById(`fecha-pago-${id}`).value.trim();
+
+        if (!factura_id || !metodo_pago || !fecha_pago) {
+            alert("Completa todos los campos del pago.");
+            return;
+        }
+
+        const data = new FormData();
+        data.append('pago_id', id);
+        data.append('factura_id', factura_id);
+        data.append('metodo_pago', metodo_pago);
+        data.append('fecha_pago', fecha_pago);
+
+        fetch('../PHP_VENTAS/actualizar_pago.php', {
+            method: 'POST',
+            body: data
+        })
+        .then(res => res.json())
+        .then(res => {
+            if (res.success) {
+                alert("Pago actualizado.");
+                cargarPagos();
+            } else {
+                alert("Error al actualizar pago: " + res.message);
+            }
+        })
+        .catch(err => alert("Error al actualizar pago: " + err.message));
+    }
+
+    // Eliminar pago (sin cambios)
+    function eliminarPago(id) {
+        if (!confirm("¿Eliminar este pago?")) return;
+        const data = new FormData();
+        data.append('pago_id', id);
+        fetch('../PHP_VENTAS/eliminar_pago.php', {
+            method: 'POST',
+            body: data
+        })
+        .then(res => res.json())
+        .then(res => {
+            if (res.success) {
+                alert("Pago eliminado.");
+                cargarPagos();
+            } else {
+                alert("Error al eliminar pago: " + res.message);
+            }
+        })
+        .catch(err => alert("Error al eliminar pago: " + err.message));
+    }
+
+    // Carga inicial
+    cargarFacturas();
 </script>
 
 </body>
 </html>
+

@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Clientes - ERP AbogaTech</title>
+    <title>Clientes - ERP RLV</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         * {
@@ -14,12 +14,12 @@
             font-family: 'Inter', sans-serif;
             display: flex;
             height: 100vh;
-            background-color: #f4f4f4;
+            background-color: #f5f5f5;
         }
 
         .sidebar {
             width: 240px;
-            background-color: #171729;
+            background-color: #0d0d26;
             color: white;
             padding: 30px 20px;
             display: flex;
@@ -47,7 +47,7 @@
         }
 
         .sidebar li:hover {
-            background-color: #2a2a40;
+            background-color: #1f1f3b;
             border-radius: 6px;
         }
 
@@ -58,27 +58,32 @@
 
         .main {
             flex: 1;
-            padding: 40px;
+            padding: 60px;
             overflow-y: auto;
         }
 
         h2 {
             font-size: 26px;
             color: #222;
+            text-align: center;
+            margin-bottom: 30px;
         }
 
         p {
             color: #444;
             font-size: 16px;
+            text-align: center;
         }
 
         table {
             width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
             border-collapse: collapse;
             margin-top: 30px;
             background: white;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            border-radius: 8px;
+            border-radius: 10px;
             overflow: hidden;
         }
 
@@ -106,20 +111,21 @@
             margin-right: 5px;
             cursor: pointer;
             font-weight: 600;
+            transition: background 0.3s;
         }
 
         .btn-update {
-            background-color: #4CAF50;
-            color: white;
+            background-color: #f5c518;
+            color: black;
+        }
+
+        .btn-update:hover {
+            background-color: #e0b000;
         }
 
         .btn-delete {
             background-color: #E53935;
             color: white;
-        }
-
-        .btn-update:hover {
-            background-color: #43a047;
         }
 
         .btn-delete:hover {
@@ -130,29 +136,29 @@
 <body>
 
 <div class="sidebar">
-    <h2>🔶 ERP RLV</h2>
+    <h2>🔶 MÓDULO CLIENTES</h2>
     <ul>
         <li onclick="mostrarInicio()"><span>🏠</span>Inicio</li>
-        <li onclick="cargarClientes()"><span>🔍</span>Consultar Clientes</li>
+        <li onclick="cargarClientes()"><span>👥</span>Consultar Clientes</li>
         <li onclick="volverAlPanel()"><span>↩️</span>Volver al Panel</li>
     </ul>
 </div>
 
 <div class="main" id="contenido">
-    <h2>Módulo Clientes - ERP AbogaTech</h2>
+    <h2>Módulo Clientes - ERP RLV</h2>
     <p>Usa el menú lateral para gestionar los clientes.</p>
 </div>
 
 <script>
 function mostrarInicio() {
     document.getElementById('contenido').innerHTML = `
-        <h2>Módulo Clientes - ERP AbogaTech</h2>
+        <h2>Módulo Clientes - ERP RLV</h2>
         <p>Usa el menú lateral para gestionar los clientes.</p>
     `;
 }
 
 function volverAlPanel() {
-    window.location.href = '../HTML/Módulos.html'; // Cambia esto si tu ruta es distinta
+    window.location.href = '../HTML/Módulos.html';
 }
 
 function cargarClientes() {
@@ -220,7 +226,7 @@ function eliminarCliente(id) {
     const data = new URLSearchParams();
     data.append('id', id);
 
-    fetch('..//PHP_CLIENTES/eliminar_clientes.php', {
+    fetch('../PHP_CLIENTES/eliminar_clientes.php', {
         method: 'POST',
         body: data
     })
@@ -234,5 +240,6 @@ function eliminarCliente(id) {
 
 </body>
 </html>
+
 
 

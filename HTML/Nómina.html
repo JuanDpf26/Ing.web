@@ -1,113 +1,236 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8" />
   <title>Gestión de Empleados - ERP AbogaTech</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../CSS/empleados.css" />
   <style>
-    body {
-      display: flex;
-      font-family: 'Inter', sans-serif;
-      margin: 0;
-      background-color: #f8f8f8;
-    }
-    .sidebar {
-      width: 220px;
-      background-color: #0d0d22;
-      color: white;
-      padding: 20px;
-      min-height: 100vh;
-    }
-    .sidebar h2 {
-      color: #FFD700;
-    }
-    .sidebar ul {
-      list-style: none;
-      padding: 0;
-    }
-    .sidebar li {
-      padding: 10px;
-      cursor: pointer;
-    }
-    .sidebar li:hover {
-      background-color: #1e1e3f;
-    }
-    .main {
-      flex-grow: 1;
-      padding: 40px;
-    }
-    .formulario label {
-      display: block;
-      margin-top: 10px;
-    }
-    .formulario input,
-    .formulario select,
-    .formulario button {
-      width: 100%;
-      padding: 8px;
-      margin-top: 5px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      box-sizing: border-box;
-    }
-    .formulario button {
-      background-color: #FFD700;
-      color: black;
-      font-weight: bold;
-      margin-top: 15px;
-      border: none;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-    .formulario button:hover {
-      background-color: #e6c200;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-    th,
-    td {
-      border: 1px solid #ccc;
-      padding: 8px;
-      text-align: left;
-      vertical-align: middle;
-    }
-    input[type="date"] {
-      padding: 6px;
-    }
-    .btn-update {
-      background-color: #4CAF50;
-      color: white;
-      margin-right: 5px;
-      border: none;
-      padding: 6px 10px;
-      cursor: pointer;
-      border-radius: 4px;
-      transition: background-color 0.3s;
-    }
-    .btn-update:hover {
-      background-color: #45a049;
-    }
-    .btn-delete {
-      background-color: #f44336;
-      color: white;
-      border: none;
-      padding: 6px 10px;
-      cursor: pointer;
-      border-radius: 4px;
-      transition: background-color 0.3s;
-    }
-    .btn-delete:hover {
-      background-color: #d32f2f;
-    }
-  </style>
+  body {
+    display: flex;
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    background-color: #f8f8f8;
+  }
+
+  .sidebar {
+    width: 220px;
+    background-color: #0d0d22;
+    color: white;
+    padding: 20px;
+    min-height: 100vh;
+  }
+
+  .sidebar h2 {
+    color: #FFD700;
+  }
+
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .sidebar li {
+    padding: 10px;
+    cursor: pointer;
+  }
+
+  .sidebar li:hover {
+    background-color: #1e1e3f;
+  }
+
+  .main {
+    flex-grow: 1;
+    padding: 40px;
+  }
+
+  .formulario label {
+    display: block;
+    margin-top: 10px;
+  }
+
+  .formulario input,
+  .formulario select,
+  .formulario button {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+  }
+
+  .formulario button {
+    background-color: #FFD700;
+    color: black;
+    font-weight: bold;
+    margin-top: 15px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .formulario button:hover {
+    background-color: #e6c200;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+    margin-top: 20px;
+    font-size: 14px;
+  }
+
+  th {
+    background-color: #0d0d22;
+    color: white;
+    text-align: left;
+    padding: 12px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+
+  td {
+    background-color: white;
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    border-left: 1px solid #eee;
+    border-right: 1px solid #eee;
+  }
+
+  tr {
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    margin-bottom: 10px;
+  }
+
+  tr:last-child td {
+    border-bottom: 1px solid #ddd;
+  }
+
+  td input,
+  td select {
+    width: 100%;
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+  }
+
+  td input[type="date"] {
+    padding: 6px;
+  }
+
+  .btn-update {
+    background-color: #4CAF50;
+    color: white;
+    margin-right: 5px;
+    border: none;
+    padding: 6px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+  }
+
+  .btn-update:hover {
+    background-color: #45a049;
+  }
+
+  .btn-delete {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+  }
+
+  .btn-delete:hover {
+    background-color: #d32f2f;
+  }
+
+
+  table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 10px;
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+th {
+  background-color: #0d0d22;
+  color: white;
+  text-align: left;
+  padding: 12px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+td {
+  background-color: white;
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+  vertical-align: middle;
+}
+
+tr {
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+td input,
+td select {
+  width: 100%;
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+}
+
+.btn-update {
+  background-color: #FFD700;
+  color: black;
+  font-weight: bold;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-right: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-update:hover {
+  background-color: #e6c200;
+}
+
+.btn-delete {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-delete:hover {
+  background-color: #d32f2f;
+}
+
+</style>
+
 </head>
+
 <body>
   <div class="sidebar">
-    <h2>🧑‍⚖️ ERP RLV</h2>
+    <h2>🧑‍⚖️ ERP MÓDULO RRHH/NÓMINA</h2>
     <ul>
       <li onclick="mostrarInicio()">🏠 Inicio</li>
       <li onclick="mostrarFormulario()">📝 Crear Empleado</li>
@@ -173,63 +296,57 @@
           method: 'POST',
           body: datos
         })
-        .then(res => res.text())
-        .then(msg => {
-          alert(msg);
-          cargarEmpleados();
-        });
+          .then(res => res.text())
+          .then(msg => {
+            alert(msg);
+            cargarEmpleados();
+          });
       };
     }
 
     function cargarEmpleados() {
-      fetch('../PHP_EMPLEADOS/consultar_abogado.php')
-        .then(res => res.json())
-        .then(empleados => {
-          let html = `<h2>Lista de Empleados</h2>`;
-          if (empleados.length === 0) {
-            html += `<p>No hay empleados registrados.</p>`;
+      fetch('../PHP_Empleados/consultar_abogado.php')  // <-- Asegúrate de que esta ruta exista
+        .then(response => response.json())
+        .then(abogados => {
+          let html = '<h2>Lista de Abogados</h2>';
+          if (abogados.length === 0) {
+            html += '<p>No hay abogados registrados.</p>';
           } else {
-            html += `
-              <table>
-                <tr>
-                  <th>ID</th>
-                  <th>Nombre</th>
-                  <th>Especialidad</th>
-                  <th>Teléfono</th>
-                  <th>Correo</th>
-                  <th>Fecha</th>
-                  <th>Acciones</th>
-                </tr>
-            `;
-            empleados.forEach(e => {
+            html += '<table><tr><th>ID</th><th>Nombre</th><th>Especialidad</th><th>Teléfono</th><th>Correo</th><th>Fecha Contratación</th><th>Acciones</th></tr>';
+            abogados.forEach(a => {
               html += `
-                <tr>
-                  <td>${e.id}</td>
-                  <td><input value="${e.nombre}" id="nombre-${e.id}" /></td>
-                  <td>
-                    <select id="especialidad-${e.id}">
-                      <option value="Asesoría Jurídica en Siniestros Viales" ${e.especialidad === 'Asesoría Jurídica en Siniestros Viales' ? 'selected' : ''}>Asesoría Jurídica en Siniestros Viales</option>
-                      <option value="Implementación y Manejo del PESV" ${e.especialidad === 'Implementación y Manejo del PESV' ? 'selected' : ''}>Implementación y Manejo del PESV</option>
-                      <option value="Reconstrucción Técnica y Analítica de Siniestros Viales" ${e.especialidad === 'Reconstrucción Técnica y Analítica de Siniestros Viales' ? 'selected' : ''}>Reconstrucción Técnica y Analítica de Siniestros Viales</option>
-                      <option value="Servicios Funerarios en Siniestros Viales" ${e.especialidad === 'Servicios Funerarios en Siniestros Viales' ? 'selected' : ''}>Servicios Funerarios en Siniestros Viales</option>
-                      <option value="Reclamaciones Ante las Aseguradoras" ${e.especialidad === 'Reclamaciones Ante las Aseguradoras' ? 'selected' : ''}>Reclamaciones Ante las Aseguradoras</option>
-                    </select>
-                  </td>
-                  <td><input value="${e.telefono}" id="telefono-${e.id}" /></td>
-                  <td><input value="${e.correo}" id="correo-${e.id}" /></td>
-                  <td><input type="date" value="${e.fecha_contratacion}" id="fecha-${e.id}" /></td>
-                  <td>
-                    <button class="btn-update" onclick="actualizarAbogado(${e.id})">Actualizar</button>
-                    <button class="btn-delete" onclick="eliminarAbogado(${e.id})">Eliminar</button>
-                  </td>
-                </tr>
-              `;
+                        <tr>
+                            <td>${a.id}</td>
+                            <td><input value="${a.nombre}" id="nombre-${a.id}"></td>
+                            <td>
+  <select id="especialidad-${a.id}">
+    <option value="Asesoría Jurídica en Siniestros Viales" ${a.especialidad === "Asesoría Jurídica en Siniestros Viales" ? 'selected' : ''}>Asesoría Jurídica en Siniestros Viales</option>
+    <option value="Implementación y Manejo del PESV" ${a.especialidad === "Implementación y Manejo del PESV" ? 'selected' : ''}>Implementación y Manejo del PESV</option>
+    <option value="Reconstrucción Técnica y Analítica de Siniestros Viales" ${a.especialidad === "Reconstrucción Técnica y Analítica de Siniestros Viales" ? 'selected' : ''}>Reconstrucción Técnica y Analítica de Siniestros Viales</option>
+    <option value="Servicios Funerarios en Siniestros Viales" ${a.especialidad === "Servicios Funerarios en Siniestros Viales" ? 'selected' : ''}>Servicios Funerarios en Siniestros Viales</option>
+    <option value="Reclamaciones Ante las Aseguradoras" ${a.especialidad === "Reclamaciones Ante las Aseguradoras" ? 'selected' : ''}>Reclamaciones Ante las Aseguradoras</option>
+  </select>
+</td>
+                            <td><input value="${a.telefono}" id="telefono-${a.id}"></td>
+                            <td><input value="${a.correo}" id="correo-${a.id}"></td>
+                            <td><input type="date" value="${a.fecha_contratacion}" id="fecha-${a.id}"></td>
+                            <td>
+                                <button class="btn-update" onclick="actualizarAbogado(${a.id})">Actualizar</button>
+                                <button class="btn-delete" onclick="eliminarAbogado(${a.id})">Eliminar</button>
+                            </td>
+                        </tr>
+                    `;
             });
-            html += `</table>`;
+            html += '</table>';
           }
           document.getElementById('contenido').innerHTML = html;
+        })
+        .catch(err => {
+          document.getElementById('contenido').innerHTML = `<p style="color:red;">Error: ${err.message}</p>`;
         });
     }
+
+
 
     function actualizarAbogado(id) {
       const datos = new URLSearchParams();
@@ -244,11 +361,11 @@
         method: 'POST',
         body: datos
       })
-      .then(res => res.text())
-      .then(msg => {
-        alert(msg);
-        cargarEmpleados();
-      });
+        .then(res => res.text())
+        .then(msg => {
+          alert(msg);
+          cargarEmpleados();
+        });
     }
 
     function eliminarAbogado(id) {
@@ -261,52 +378,86 @@
         method: 'POST',
         body: datos
       })
-      .then(res => res.text())
-      .then(msg => {
-        alert(msg);
-        cargarEmpleados();
-      });
-    }
-
-    function mostrarNomina() {
-      document.getElementById('contenido').innerHTML = `
-        <h2>Calcular Nómina</h2>
-        <form id="formNomina" class="formulario">
-          <label>ID Abogado:</label>
-          <input type="number" id="abogado_id" required />
-          <label>Salario Base:</label>
-          <input type="number" id="salario" step="0.01" required />
-          <label>Bonificaciones:</label>
-          <input type="number" id="bono" step="0.01" />
-          <label>Descuentos:</label>
-          <input type="number" id="desc" step="0.01" />
-          <button type="submit">Calcular y Guardar</button>
-        </form>
-      `;
-
-      document.getElementById('formNomina').onsubmit = (e) => {
-        e.preventDefault();
-        const datos = new URLSearchParams();
-        datos.append('abogado_id', document.getElementById('abogado_id').value);
-        datos.append('salario', document.getElementById('salario').value);
-        datos.append('bono', document.getElementById('bono').value);
-        datos.append('desc', document.getElementById('desc').value);
-
-        fetch('../PHP_EMPLEADOS/calcular_nomina.php', {
-          method: 'POST',
-          body: datos
-        })
         .then(res => res.text())
         .then(msg => {
           alert(msg);
+          cargarEmpleados();
         });
-      };
     }
+
+    function mostrarNomina() {
+  document.getElementById('contenido').innerHTML = `
+    <h2>Calcular Nómina</h2>
+    <form id="formNomina" class="formulario">
+      <label>ID Abogado:</label>
+      <div style="display: flex; gap: 8px; align-items: center;">
+        <input type="number" id="abogado_id" required style="flex-grow: 1;" />
+        <button type="button" id="btnBuscarNombre" style="width: 100px; padding: 6px;">Buscar</button>
+      </div>
+
+      <label>Nombre:</label>
+      <input type="text" id="nombre" readonly />
+
+      <label>Salario Base:</label>
+      <input type="number" id="salario_base" step="0.01" required />
+
+      <label>Bonificaciones:</label>
+      <input type="number" id="bonificaciones" step="0.01" />
+
+      <label>Descuentos:</label>
+      <input type="number" id="descuentos" step="0.01" />
+
+      <button type="submit">Calcular y Guardar</button>
+    </form>
+  `;
+
+  document.getElementById('btnBuscarNombre').addEventListener('click', () => {
+    const abogadoId = document.getElementById('abogado_id').value.trim();
+    if (!abogadoId) {
+      alert('Por favor ingresa el ID del abogado.');
+      return;
+    }
+
+    fetch(`../PHP_EMPLEADOS/busca_abogado.php?id=${abogadoId}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.nombre) {
+          document.getElementById('nombre').value = data.nombre;
+        } else {
+          alert('No se encontró ningún abogado con ese ID.');
+          document.getElementById('nombre').value = '';
+        }
+      })
+      .catch(err => {
+        alert('Error al buscar el nombre del abogado.');
+        console.error(err);
+      });
+  });
+
+  document.getElementById('formNomina').onsubmit = (e) => {
+    e.preventDefault();
+    const datos = new URLSearchParams();
+    datos.append('abogado_id', document.getElementById('abogado_id').value);
+    datos.append('nombre', document.getElementById('nombre').value);
+    datos.append('salario_base', document.getElementById('salario_base').value);
+    datos.append('bonificaciones', document.getElementById('bonificaciones').value || 0);
+    datos.append('descuentos', document.getElementById('descuentos').value || 0);
+
+    fetch('../PHP_EMPLEADOS/procesar_nomina.php', {
+      method: 'POST',
+      body: datos
+    })
+      .then(res => res.text())
+      .then(msg => {
+        alert(msg);
+      });
+  };
+}
+
+
+
+
   </script>
 </body>
+
 </html>
-
-
-
-
-
