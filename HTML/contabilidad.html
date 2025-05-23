@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Módulo Contabilidad - ERP AbogaTech</title>
+    <link rel="stylesheet" href="../CSS/Clientes.css">
+    <style>
+        .section { display: none; }
+        .section.active { display: block; }
+        table, th, td { border: 1px solid black; border-collapse: collapse; padding: 5px; }
+        input, button { margin: 5px; }
+    </style>
+</head>
+<body>
+
+<div class="sidebar">
+    <h2>🟢 ERP Contabilidad</h2>
+    <a href="#" onclick="mostrarSeccion('inicio')">🏠 Inicio</a>
+    <a href="#" onclick="mostrarSeccion('ingresos')">➕ Registrar Ingreso</a>
+    <a href="#" onclick="mostrarSeccion('egresos')">➖ Registrar Egreso</a>
+    <a href="#" onclick="mostrarSeccion('movimientos')">📋 Ver Movimientos</a>
+    <a href="#" onclick="mostrarSeccion('balance')">📊 Ver Balance</a>
+    <a href="../HTML/Módulos.html">⬅ Volver al Panel</a>
+</div>
+
+<div class="main">
+    <!-- INICIO -->
+    <section id="inicio" class="section active">
+        <h1>Módulo Contabilidad - ERP AbogaTech</h1>
+        <p>Gestiona ingresos, egresos y balance financiero.</p>
+    </section>
+
+    <!-- INGRESOS -->
+    <section id="ingresos" class="section">
+        <h2>Registrar Ingreso</h2>
+        <form method="POST" action="contabilidad.php">
+            <input type="text" name="concepto" placeholder="Concepto" required>
+            <input type="number" name="monto" placeholder="Monto" required>
+            <input type="hidden" name="tipo" value="ingreso">
+            <button type="submit" name="registrar">Guardar</button>
+        </form>
+    </section>
+
+    <!-- EGRESOS -->
+    <section id="egresos" class="section">
+        <h2>Registrar Egreso</h2>
+        <form method="POST" action="contabilidad.php">
+            <input type="text" name="concepto" placeholder="Concepto" required>
+            <input type="number" name="monto" placeholder="Monto" required>
+            <input type="hidden" name="tipo" value="egreso">
+            <button type="submit" name="registrar">Guardar</button>
+        </form>
+    </section>
+
+    <!-- MOVIMIENTOS -->
+    <section id="movimientos" class="section">
+        <h2>Movimientos Contables</h2>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Tipo</th>
+                <th>Concepto</th>
+                <th>Monto</th>
+                <th>Fecha</th>
+                <th>Acciones</th>
+            </tr>
+            <?php while ($mov = $movimientos->fetch_assoc()): ?>
+            <tr>
+                <td><?= $mov['id'] ?></td>
+                <td><?= ucfirst($mov['tipo']) ?></td>
+                <td><?= htmlspecialchars($mov['concepto']) ?></td>
+                <td>$<?= number_format($mov['monto'], 2) ?></td>
+                <td><?= $mov['fecha'] ?></td>
+                <td>
+                    <a href="contabilidad.php?eliminar=<?= $mov['id'] ?>" onclick="return confirm('¿Eliminar este movimiento?')">Eliminar</a>
+                </td>
+            </tr>
+            <?php endwhile; ?>
+        </table>
+    </section>
+
+    <!-- BALANCE -->
+    <section id="balance" class="section">
+        <h2>Balance General</h2>
+        <?php
+            $totalIngresos = 0;
+            $totalEgresos = 0;
+            foreach ($movimientos_totales as $m) {
+                if ($m['tipo'] === 'ingreso') $totalIngresos += $m['monto'];
+                if ($m['tipo'] === 'egreso')  $totalEgresos += $m['monto'];
+            }
+            $balance = $totalIngresos - $totalEgresos;
+        ?>
+        <p><strong>Total Ingresos:</strong> $<?= number_format($totalIngresos, 2) ?></p>
+        <p><strong>Total Egresos:</strong> $<?= number_format($totalEgresos, 2) ?></p>
+        <p><strong>Balance Neto:</strong> $<?= number_format($balance, 2) ?></p>
+    </section>
+</div>
+
+<script>
+function mostrarSeccion(id) {
+    document.querySelectorAll('.section').forEach(seccion => seccion.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+}
+</script>
+
+</body>
+</html>

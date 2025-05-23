@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Empleados - ERP AbogaTech</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      display: flex;
+      height: 100vh;
+      background-color: #f4f4f4;
+    }
+    .sidebar {
+      width: 240px;
+      background-color: #171729;
+      color: white;
+      padding: 30px 20px;
+      display: flex;
+      flex-direction: column;
+    }
+    .sidebar h2 {
+      color: #f5c518;
+      font-size: 22px;
+      margin-bottom: 40px;
+    }
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+    .sidebar li {
+      font-size: 16px;
+      padding: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      transition: background 0.2s;
+    }
+    .sidebar li:hover {
+      background-color: #2a2a40;
+      border-radius: 6px;
+    }
+    .sidebar li span {
+      margin-right: 10px;
+      font-size: 20px;
+    }
+    .main {
+      flex: 1;
+      padding: 40px;
+      overflow-y: auto;
+    }
+    h2 {
+      font-size: 26px;
+      color: #222;
+    }
+    p {
+      color: #444;
+      font-size: 16px;
+    }
+    input, select {
+      padding: 8px;
+      width: 100%;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 5px;
+      margin-right: 5px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .btn-update { background-color: #4CAF50; color: white; }
+    .btn-delete { background-color: #E53935; color: white; }
+    .btn-update:hover { background-color: #43a047; }
+    .btn-delete:hover { background-color: #d32f2f; }
+    .btn-create { background-color: #2196F3; color: white; margin-bottom: 20px; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 30px;
+      background: white;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    th, td {
+      padding: 14px;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+    th { background-color: #f5f5f5; }
+  </style>
+</head>
+<body>
+<div class="sidebar">
+  <h2>🔶 ERP RLV</h2>
+  <ul>
+    <li onclick="mostrarInicio()"><span>🏠</span>Inicio</li>
+    <li onclick="cargarEmpleados()"><span>🔍</span>Consultar Empleados</li>
+    <li onclick="mostrarFormularioEmpleado()"><span>➕</span>Crear Empleado</li>
+    <li onclick="volverAlPanel()"><span>↩️</span>Volver al Panel</li>
+  </ul>
+</div>
+<div class="main" id="contenido">
+  <h2>Módulo Empleados - ERP AbogaTech</h2>
+  <p>Usa el menú lateral para gestionar los abogados del bufete.</p>
+</div>
+<script>
+function mostrarInicio() {
+  document.getElementById('contenido').innerHTML = `
+    <h2>Módulo Empleados - ERP AbogaTech</h2>
+    <p>Usa el menú lateral para gestionar los abogados del bufete.</p>
+  `;
+}
+function volverAlPanel() {
+  window.location.href = '../HTML/Módulos.html';
+}
+function mostrarFormularioEmpleado() {
+  document.getElementById('contenido').innerHTML = `
+    <h2>Registrar Nuevo Abogado</h2>
+    <input id="nombre" placeholder="Nombre">
+    <input id="especialidad" placeholder="Especialidad">
+    <input id="telefono" placeholder="Teléfono">
+    <input id="correo" placeholder="Correo Electrónico">
+    <input id="fecha" type="date" placeholder="Fecha de Contratación">
+    <button class="btn-create" onclick="crearAbogado()">Crear</button>
+  `;
+}
+function crearAbogado() {
+  const nombre = document.getElementById("nombre").value;
+  const especialidad = document.getElementById("especialidad").value;
+  const telefono = document.getElementById("telefono").value;
+  const correo = document.getElementById("correo").value;
+  const fecha = document.getElementById("fecha").value;
+
+  if (!nombre || !especialidad || !telefono || !correo || !fecha) {
+    alert("Todos los campos son obligatorios.");
+    return;
+  }
+  const data = new URLSearchParams();
+  data.append('nombre', nombre);
+  data.append('especialidad', especialidad);
+  data.append('telefono', telefono);
+  data.append('correo', correo);
+  data.append('fecha_contratacion', fecha);
+
+  fetch('../PHP_ABOGADOS/crear_abogado.php', {
+    method: 'POST', body: data
+  })
+  .then(res => res.text())
+  .then(msg => {
+    alert(msg);
+    cargarEmpleados();
+  });
+}
+function cargarEmpleados() {
+  fetch('../PHP_ABOGADOS/obtener_abogados.php')
+    .then(response => response.json())
+    .then(abogados => {
+      let html = '<h2>Lista de Abogados</h2>';
+      if (abogados.length === 0) {
+        html += '<p>No hay empleados registrados.</p>';
+      } else {
+        html += '<table><tr><th>ID</th><th>Nombre</th><th>Especialidad</th><th>Teléfono</th><th>Correo</th><th>Fecha Contratación</th><th>Acciones</th></tr>';
+        abogados.forEach(a => {
+          html += `
+            <tr>
+              <td>${a.id}</td>
+              <td><input value="${a.nombre}" id="nombre-${a.id}"></td>
+              <td><input value="${a.especialidad}" id="especialidad-${a.id}"></td>
+              <td><input value="${a.telefono}" id="telefono-${a.id}"></td>
+              <td><input value="${a.correo}" id="correo-${a.id}"></td>
+              <td><input type="date" value="${a.fecha_contratacion}" id="fecha-${a.id}"></td>
+              <td>
+                <button class="btn-update" onclick="actualizarAbogado(${a.id})">Actualizar</button>
+                <button class="btn-delete" onclick="eliminarAbogado(${a.id})">Eliminar</button>
+              </td>
+            </tr>
+          `;
+        });
+        html += '</table>';
+      }
+      document.getElementById('contenido').innerHTML = html;
+    });
+}
+function actualizarAbogado(id) {
+  const nombre = document.getElementById(`nombre-${id}`).value;
+  const especialidad = document.getElementById(`especialidad-${id}`).value;
+  const telefono = document.getElementById(`telefono-${id}`).value;
+  const correo = document.getElementById(`correo-${id}`).value;
+  const fecha = document.getElementById(`fecha-${id}`).value;
+
+  const data = new URLSearchParams();
+  data.append('id', id);
+  data.append('nombre', nombre);
+  data.append('especialidad', especialidad);
+  data.append('telefono', telefono);
+  data.append('correo', correo);
+  data.append('fecha_contratacion', fecha);
+
+  fetch('../PHP_ABOGADOS/actualizar_abogado.php', {
+    method: 'POST', body: data
+  })
+  .then(res => res.text())
+  .then(msg => {
+    alert(msg);
+    cargarEmpleados();
+  });
+}
+function eliminarAbogado(id) {
+  if (!confirm("¿Deseas eliminar este abogado?")) return;
+
+  const data = new URLSearchParams();
+  data.append('id', id);
+  fetch('../PHP_ABOGADOS/eliminar_abogado.php', {
+    method: 'POST', body: data
+  })
+  .then(res => res.text())
+  .then(msg => {
+    alert(msg);
+    cargarEmpleados();
+  });
+}
+</script>
+</body>
+</html>
+
+

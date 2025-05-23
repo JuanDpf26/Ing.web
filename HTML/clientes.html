@@ -2,94 +2,237 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Módulo Clientes - ERP AbogaTech</title>
-    <link rel="stylesheet" href="../CSS/Clientes.css">
+    <title>Clientes - ERP AbogaTech</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        .section { display: none; }
-        .section.active { display: block; }
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+
+        .sidebar {
+            width: 240px;
+            background-color: #171729;
+            color: white;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar h2 {
+            color: #f5c518;
+            font-size: 22px;
+            margin-bottom: 40px;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar li {
+            font-size: 16px;
+            padding: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: background 0.2s;
+        }
+
+        .sidebar li:hover {
+            background-color: #2a2a40;
+            border-radius: 6px;
+        }
+
+        .sidebar li span {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+
+        .main {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+        }
+
+        h2 {
+            font-size: 26px;
+            color: #222;
+        }
+
+        p {
+            color: #444;
+            font-size: 16px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+            background: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 14px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background-color: #f5f5f5;
+        }
+
+        input {
+            padding: 8px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            margin-right: 5px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .btn-update {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .btn-delete {
+            background-color: #E53935;
+            color: white;
+        }
+
+        .btn-update:hover {
+            background-color: #43a047;
+        }
+
+        .btn-delete:hover {
+            background-color: #d32f2f;
+        }
     </style>
 </head>
 <body>
 
 <div class="sidebar">
-    <h2>🟡 ERP RLV</h2>
-    <a href="#" onclick="mostrarSeccion('bienvenida')">🏠 Inicio</a>
-    <a href="#" onclick="mostrarSeccion('crear')">➕ Crear Cliente</a>
-    <a href="#" onclick="mostrarSeccion('buscar')">🔍 Buscar Cliente</a>
-    <a href="#" onclick="mostrarSeccion('lista')">📋 Ver Todos</a>
-    <a href="../HTML/Módulos.html">⬅ Volver al Panel</a>
+    <h2>🔶 ERP RLV</h2>
+    <ul>
+        <li onclick="mostrarInicio()"><span>🏠</span>Inicio</li>
+        <li onclick="cargarClientes()"><span>🔍</span>Consultar Clientes</li>
+        <li onclick="volverAlPanel()"><span>↩️</span>Volver al Panel</li>
+    </ul>
 </div>
 
-<div class="main">
-    <section id="bienvenida" class="section active">
-        <h1>Módulo Clientes - ERP AbogaTech</h1>
-        <p>Usa el menú lateral para gestionar los clientes.</p>
-    </section>
-
-    <section id="crear" class="section">
-        <h2>Crear Cliente</h2>
-        <form method="POST" action="clientes.php">
-            <input type="text" name="id" placeholder="ID" required>
-            <input type="text" name="nombre" placeholder="Nombre" required>
-            <input type="number" name="edad" placeholder="Edad" required>
-            <input type="email" name="correo" placeholder="Correo" required>
-            <input type="password" name="password" placeholder="Contraseña" required>
-            <button type="submit" name="crear">Guardar</button>
-        </form>
-    </section>
-
-    <section id="buscar" class="section">
-        <h2>Buscar Cliente por ID</h2>
-        <form method="POST" action="clientes.php">
-            <input type="text" name="buscar_id" placeholder="ID" required>
-            <button type="submit" name="buscar">Buscar</button>
-        </form>
-
-        <?php if ($cliente_buscado): ?>
-        <h3>Actualizar Cliente</h3>
-        <form method="POST" action="clientes.php">
-            <input type="hidden" name="id" value="<?= htmlspecialchars($cliente_buscado['Id']) ?>">
-            <input type="text" name="nombre" value="<?= htmlspecialchars($cliente_buscado['Nombre']) ?>" required>
-            <input type="number" name="edad" value="<?= (int)$cliente_buscado['Edad'] ?>" required>
-            <input type="email" name="correo" value="<?= htmlspecialchars($cliente_buscado['Correo']) ?>" required>
-            <button type="submit" name="actualizar">Actualizar</button>
-        </form>
-        <?php endif; ?>
-    </section>
-
-    <section id="lista" class="section">
-        <h2>Listado de Clientes</h2>
-        <table>
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Edad</th>
-                <th>Correo</th>
-                <th>Acciones</th>
-            </tr>
-            <?php while ($row = $result_clientes->fetch_assoc()): ?>
-            <tr>
-                <td><?= htmlspecialchars($row['Id']) ?></td>
-                <td><?= htmlspecialchars($row['Nombre']) ?></td>
-                <td><?= (int)$row['Edad'] ?></td>
-                <td><?= htmlspecialchars($row['Correo']) ?></td>
-                <td>
-                    <a href="clientes.php?eliminar=<?= urlencode($row['Id']) ?>" class="btn-delete"
-                       onclick="return confirm('¿Eliminar este cliente?')">Eliminar</a>
-                </td>
-            </tr>
-            <?php endwhile; ?>
-        </table>
-    </section>
+<div class="main" id="contenido">
+    <h2>Módulo Clientes - ERP AbogaTech</h2>
+    <p>Usa el menú lateral para gestionar los clientes.</p>
 </div>
 
 <script>
-function mostrarSeccion(id) {
-    document.querySelectorAll('.section').forEach(seccion => seccion.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
+function mostrarInicio() {
+    document.getElementById('contenido').innerHTML = `
+        <h2>Módulo Clientes - ERP AbogaTech</h2>
+        <p>Usa el menú lateral para gestionar los clientes.</p>
+    `;
+}
+
+function volverAlPanel() {
+    window.location.href = '../HTML/Módulos.html'; // Cambia esto si tu ruta es distinta
+}
+
+function cargarClientes() {
+    fetch('../PHP_CLIENTES/obtener_clientes.php')
+        .then(response => response.json())
+        .then(clientes => {
+            let html = '<h2>Lista de Clientes</h2>';
+            if (clientes.length === 0) {
+                html += '<p>No hay clientes registrados.</p>';
+            } else {
+                html += '<table><tr><th>ID</th><th>Nombre</th><th>Edad</th><th>Correo</th><th>Acciones</th></tr>';
+                clientes.forEach(c => {
+                    html += `
+                        <tr>
+                            <td>${c.id}</td>
+                            <td><input value="${c.nombre}" id="nombre-${c.id}"></td>
+                            <td><input value="${c.edad}" id="edad-${c.id}"></td>
+                            <td><input value="${c.correo}" id="correo-${c.id}"></td>
+                            <td>
+                                <button class="btn-update" onclick="actualizarCliente(${c.id})">Actualizar</button>
+                                <button class="btn-delete" onclick="eliminarCliente(${c.id})">Eliminar</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+                html += '</table>';
+            }
+            document.getElementById('contenido').innerHTML = html;
+        })
+        .catch(err => {
+            document.getElementById('contenido').innerHTML = `<p style="color:red;">Error: ${err.message}</p>`;
+        });
+}
+
+function actualizarCliente(id) {
+    const nombre = document.getElementById(`nombre-${id}`).value;
+    const edad = document.getElementById(`edad-${id}`).value;
+    const correo = document.getElementById(`correo-${id}`).value;
+
+    if (!nombre || !edad || !correo) {
+        alert("Todos los campos son obligatorios.");
+        return;
+    }
+
+    const data = new URLSearchParams();
+    data.append('id', id);
+    data.append('nombre', nombre);
+    data.append('edad', edad);
+    data.append('correo', correo);
+
+    fetch('../PHP_CLIENTES/actualizar_cliente.php', {
+        method: 'POST',
+        body: data
+    })
+    .then(res => res.text())
+    .then(mensaje => {
+        alert(mensaje);
+        cargarClientes();
+    });
+}
+
+function eliminarCliente(id) {
+    if (!confirm("¿Deseas eliminar este cliente?")) return;
+
+    const data = new URLSearchParams();
+    data.append('id', id);
+
+    fetch('..//PHP_CLIENTES/eliminar_clientes.php', {
+        method: 'POST',
+        body: data
+    })
+    .then(res => res.text())
+    .then(mensaje => {
+        alert(mensaje);
+        cargarClientes();
+    });
 }
 </script>
 
 </body>
 </html>
-      
+
+
