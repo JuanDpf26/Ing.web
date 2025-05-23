@@ -127,74 +127,70 @@
   
   /* Footer */
   .footer {
-    background-color: #323232;
-    color: #fff;
-    text-align: center;
-    padding: 20px 0;
-    margin-top: 50px;
-  }
-  
-  .footer-content {
+    background-color: #212121;
+    color: #eee;
+    padding: 40px 20px;
+}
+
+.footer-content {
+    max-width: 1100px;
+    margin: 0 auto;
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 30px;
     align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-  }
-  
-  .footer-logo .logo {
+}
+
+.footer-logo .logo {
+    font-size: 2rem;
+    font-weight: 900;
+    color: #f8ec04;
+    text-decoration: none;
+    letter-spacing: 2px;
+}
+
+.footer-logo p {
+    margin-top: 6px;
+    font-size: 14px;
+    color: #ccc;
+}
+
+.footer-links ul {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.footer-links a {
+    color: #eee;
+    font-weight: 600;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-links a:hover,
+.footer-links a:focus {
+    color: #f8ec04;
+    outline: none;
+}
+
+.footer-social ul {
+    display: flex;
+    gap: 20px;
+    list-style: none;
+}
+
+.footer-social a {
+    color: #eee;
     font-size: 1.8rem;
-    font-weight: bold;
-    color: #f8ec04;
-    text-decoration: none;
-    display: inline-block;
-  }
-  
-  .footer-links {
-    flex: 2;
-  }
-  
-  .footer-links ul {
-    display: flex;
-    justify-content: space-around;
-    list-style: none;
-  }
-  
-  .footer-links ul li a {
-    color: white;
-    text-decoration: none;
-    font-size: 1.2rem;
     transition: color 0.3s ease;
-  }
-  
-  .footer-links ul li a:hover {
+}
+
+.footer-social a:hover,
+.footer-social a:focus {
     color: #f8ec04;
-  }
-  
-  .footer-social {
-    flex: 1;
-    text-align: right;
-  }
-  
-  .footer-social ul {
-    display: flex;
-    justify-content: flex-end;
-    list-style: none;
-  }
-  
-  .footer-social ul li {
-    margin-left: 20px;
-  }
-  
-  .footer-social ul li a {
-    color: #fff;
-    font-size: 1.5rem;
-    transition: color 0.3s ease;
-  }
-  
-  .footer-social ul li a:hover,
-  .footer-social ul li a:active {
-    color: #f8ec04;
-  }
-  
+    outline: none;
+}
