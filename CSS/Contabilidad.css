@@ -1,0 +1,176 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    height: 100vh;
+    background-color: #f5f5f5;
+}
+
+.sidebar {
+    width: 240px;
+    background-color: #0d0d26;
+    color: white;
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar h2 {
+    color: #f5c518;
+    font-size: 22px;
+    margin-bottom: 40px;
+}
+
+.sidebar a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    padding: 12px;
+    margin-bottom: 5px;
+    display: block;
+    transition: background 0.2s;
+}
+
+.sidebar a:hover {
+    background-color: #1f1f3b;
+    border-radius: 6px;
+}
+
+.main {
+    flex: 1;
+    padding: 60px;
+    overflow-y: auto;
+}
+
+h1, h2 {
+    font-size: 26px;
+    color: #222;
+    text-align: left;
+    margin-bottom: 30px;
+}
+
+p {
+    color: #444;
+    font-size: 16px;
+    text-align: left;
+}
+
+form {
+    max-width: 400px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+input {
+    padding: 10px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+}
+
+button {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    background-color: #f5c518;
+    color: black;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #e0b000;
+}
+
+/* Tabla de movimientos */
+table {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    border-collapse: collapse;
+    margin-top: 30px;
+    background: white;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 14px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+th {
+    background-color: #f5f5f5;
+    font-weight: bold;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+.btn-update {
+    background-color: #f5c518;
+    color: black;
+}
+
+.btn-update:hover {
+    background-color: #e0b000;
+}
+
+.btn-delete {
+    background-color: #E53935;
+    color: white;
+}
+
+.btn-delete:hover {
+    background-color: #d32f2f;
+}
+
+.section {
+    display: none;
+}
+
+.section.active {
+    display: block;
+}
+
+/* Responsive para pantallas pequeñas */
+@media (max-width: 768px) {
+    body {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+
+    .main {
+        padding: 20px;
+    }
+
+    form {
+        width: 100%;
+        padding: 15px;
+    }
+
+    table {
+        font-size: 14px;
+    }
+}

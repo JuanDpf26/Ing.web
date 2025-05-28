@@ -2,10 +2,10 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Clientes - ERP RLV</title>
+    <title>Clientes y Citas - ERP RLV</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
+          * {
             box-sizing: border-box;
         }
 
@@ -65,14 +65,14 @@
         h2 {
             font-size: 26px;
             color: #222;
-            text-align: center;
+            text-align: left;
             margin-bottom: 30px;
         }
 
         p {
             color: #444;
             font-size: 16px;
-            text-align: center;
+            text-align: left;
         }
 
         table {
@@ -131,6 +131,13 @@
         .btn-delete:hover {
             background-color: #d32f2f;
         }
+        input[type="date"], input[type="time"] {
+            padding: 8px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
     </style>
 </head>
 <body>
@@ -140,20 +147,23 @@
     <ul>
         <li onclick="mostrarInicio()"><span>🏠</span>Inicio</li>
         <li onclick="cargarClientes()"><span>👥</span>Consultar Clientes</li>
+        <li onclick="cargarCitas()"><span>📅</span>Consultar Citas</li>
         <li onclick="volverAlPanel()"><span>↩️</span>Volver al Panel</li>
     </ul>
 </div>
 
 <div class="main" id="contenido">
-    <h2>Módulo Clientes - ERP RLV</h2>
-    <p>Usa el menú lateral para gestionar los clientes.</p>
+    <h2>Módulo Clientes - ERP AbogaTech</h2>
+    <p>Usa el menú lateral para gestionar los clientes y citas.</p>
 </div>
 
 <script>
+// Funciones ya existentes
+
 function mostrarInicio() {
     document.getElementById('contenido').innerHTML = `
         <h2>Módulo Clientes - ERP RLV</h2>
-        <p>Usa el menú lateral para gestionar los clientes.</p>
+        <p>Usa el menú lateral para gestionar los clientes y citas.</p>
     `;
 }
 
@@ -234,6 +244,113 @@ function eliminarCliente(id) {
     .then(mensaje => {
         alert(mensaje);
         cargarClientes();
+    });
+}
+
+// --- NUEVAS FUNCIONES PARA CITAS ---
+
+function cargarCitas() {
+    fetch('../PHP_CLIENTES/obtener_citas.php')
+        .then(response => response.json())
+        .then(citas => {
+            let html = '<h2>Lista de Citas</h2>';
+            if (citas.length === 0) {
+                html += '<p>No hay citas registradas.</p>';
+            } else {
+                html += `
+                    <table>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre Cliente</th>
+                            <th>Correo</th>
+                            <th>Servicio</th>
+                            <th>Precio</th>
+                            <th>Duración</th>
+                            <th>Fecha</th>
+                            <th>Hora</th>
+                            <th>ID Abogado</th>
+                            <th>Acciones</th>
+                        </tr>
+                `;
+                citas.forEach(c => {
+                    html += `
+                        <tr>
+                            <td>${c.id}</td>
+                            <td><input type="text" value="${c.nombre_cliente}" id="nombre_cliente-${c.id}"></td>
+                            <td><input type="email" value="${c.correo}" id="correo-${c.id}"></td>
+                            <td><input type="text" value="${c.servicio}" id="servicio-${c.id}"></td>
+                            <td><input type="text" value="${c.precio}" id="precio-${c.id}"></td>
+                            <td><input type="text" value="${c.duracion}" id="duracion-${c.id}"></td>
+                            <td><input type="date" value="${c.fecha_reunion}" id="fecha_reunion-${c.id}"></td>
+                            <td><input type="time" value="${c.hora_reunion}" id="hora_reunion-${c.id}"></td>
+                            <td><input type="number" value="${c.id_abogado}" id="id_abogado-${c.id}"></td>
+                            <td>
+                                <button class="btn-update" onclick="actualizarCita(${c.id})">Actualizar</button>
+                                <button class="btn-delete" onclick="eliminarCita(${c.id})">Eliminar</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+                html += '</table>';
+            }
+            document.getElementById('contenido').innerHTML = html;
+        })
+        .catch(err => {
+            document.getElementById('contenido').innerHTML = `<p style="color:red;">Error: ${err.message}</p>`;
+        });
+}
+
+function actualizarCita(id) {
+    const nombre_cliente = document.getElementById(`nombre_cliente-${id}`).value.trim();
+    const correo = document.getElementById(`correo-${id}`).value.trim();
+    const servicio = document.getElementById(`servicio-${id}`).value.trim();
+    const precio = document.getElementById(`precio-${id}`).value.trim();
+    const duracion = document.getElementById(`duracion-${id}`).value.trim();
+    const fecha_reunion = document.getElementById(`fecha_reunion-${id}`).value;
+    const hora_reunion = document.getElementById(`hora_reunion-${id}`).value;
+    const id_abogado = document.getElementById(`id_abogado-${id}`).value;
+
+    if (!nombre_cliente || !correo || !servicio || !precio || !duracion || !fecha_reunion || !hora_reunion || !id_abogado) {
+        alert("Todos los campos son obligatorios.");
+        return;
+    }
+
+    const data = new URLSearchParams();
+    data.append('id', id);
+    data.append('nombre_cliente', nombre_cliente);
+    data.append('correo', correo);
+    data.append('servicio', servicio);
+    data.append('precio', precio);
+    data.append('duracion', duracion);
+    data.append('fecha_reunion', fecha_reunion);
+    data.append('hora_reunion', hora_reunion);
+    data.append('id_abogado', id_abogado);
+
+    fetch('../PHP_CLIENTES/actualizar_citas.php', {
+        method: 'POST',
+        body: data
+    })
+    .then(res => res.text())
+    .then(mensaje => {
+        alert(mensaje);
+        cargarCitas();
+    });
+}
+
+function eliminarCita(id) {
+    if (!confirm("¿Deseas eliminar esta cita?")) return;
+
+    const data = new URLSearchParams();
+    data.append('id', id);
+
+    fetch('../PHP_CLIENTES/eliminar_citas.php', {
+        method: 'POST',
+        body: data
+    })
+    .then(res => res.text())
+    .then(mensaje => {
+        alert(mensaje);
+        cargarCitas();
     });
 }
 </script>

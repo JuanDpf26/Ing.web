@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>ERP Bufete - Inventario y Proveedores</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+    <style>
+        body {
+            display: flex;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            background-color: #f8f8f8;
+        }
+
+        .sidebar {
+            width: 220px;
+            background-color: #0d0d22;
+            color: white;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .sidebar h2 {
+            color: #FFD700;
+            margin-bottom: 20px;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar li {
+            padding: 12px 10px;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: background-color 0.3s ease;
+            user-select: none;
+        }
+
+        .sidebar li:hover {
+            background-color: #1e1e3f;
+        }
+
+        .main {
+            flex-grow: 1;
+            padding: 40px;
+        }
+
+        .formulario label {
+            display: block;
+            margin-top: 10px;
+            font-weight: 600;
+        }
+
+        .formulario input,
+        .formulario select,
+        .formulario button {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+        }
+
+        .formulario button {
+            background-color: #FFD700;
+            color: black;
+            font-weight: 700;
+            margin-top: 15px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .formulario button:hover {
+            background-color: #e6c200;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 8px;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        th {
+            background-color: #0d0d22;
+            color: white;
+            text-align: left;
+            padding: 12px;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+
+        td {
+            background-color: white;
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            vertical-align: middle;
+        }
+
+        tr {
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        td input,
+        td select {
+            width: 100%;
+            padding: 6px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+        }
+
+        .btn-update {
+            background-color: #FFD700;
+            color: black;
+            font-weight: bold;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-right: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-update:hover {
+            background-color: #e6c200;
+        }
+
+        .btn-delete {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-delete:hover {
+            background-color: #d32f2f;
+        }
+
+        .mensaje {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .mensaje.error {
+            background-color: #f8d7da;
+            color: #842029;
+        }
+
+        .mensaje.exito {
+            background-color: #d1e7dd;
+            color: #0f5132;
+        }
+
+        .balance-contenedor {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .balance-card {
+            flex: 1;
+            min-width: 220px;
+            background-color: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .balance-card h3 {
+            margin: 0 0 10px;
+            font-size: 18px;
+            color: #0d0d22;
+        }
+
+        .balance-card p {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .balance-card positivo p {
+            color: #0f5132;
+        }
+
+        .balance-card negativo p {
+            color: #842029;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar">
+        <h2>📦 ERP Bufete</h2>
+        <ul>
+            <li onclick="mostrarInicio()">🏠 Inicio</li>
+            <li onclick="mostrarFormularioInventario()">➕ Nuevo Producto</li>
+            <li onclick="mostrarFormularioProveedor()">➕ Nuevo Proveedor</li>
+            <li onclick="cargarInventario()">📋 Consultar Inventario</li>
+            <li onclick="cargarProveedores()">📋 Consultar Proveedores</li>
+            <li onclick="mostrarReporte()">📈 Reporte</li>
+            <li onclick="volverAlPanel()">↩️ Volver al Panel</li>
+        </ul>
+    </div>
+
+    <div class="main">
+        <section id="inicio" class="section active">
+          
+        </section>
+
+        <div id="contenido"></div>
+    </div>
+
+    <script>
+        function mostrarInicio() {
+            document.getElementById('contenido').innerHTML = `
+                <h1>Módulo Inventario y Proveedores - ERP Bufete</h1>
+                <p>Usa el menú lateral para gestionar productos y proveedores.</p>
+            `;
+        }
+
+        function volverAlPanel() {
+            window.location.href = '../HTML/Módulos.html';
+        }
+
+        // Formulario para crear nuevo producto en inventario
+        function mostrarFormularioInventario() {
+            document.getElementById('contenido').innerHTML = `
+                <h2>Nuevo Producto - Inventario</h2>
+                <form id="formInventario" class="formulario">
+                    <label for="nombre">Nombre del Producto</label>
+                    <input type="text" id="nombre" placeholder="Nombre del producto" required />
+
+                    <label for="categoria">Categoría</label>
+                    <input type="text" id="categoria" placeholder="Categoría" required />
+
+                    <label for="cantidad">Cantidad</label>
+                    <input type="number" id="cantidad" min="1" step="1" placeholder="Cantidad" required />
+
+                    <label for="fecha">Fecha de Registro</label>
+                    <input type="date" id="fecha" required />
+
+                    <button type="submit">Guardar Producto</button>
+                </form>
+                <div id="mensaje"></div>
+            `;
+
+            document.getElementById('formInventario').onsubmit = function (e) {
+                e.preventDefault();
+
+                const nombre = document.getElementById('nombre').value.trim();
+                const categoria = document.getElementById('categoria').value.trim();
+                const cantidad = parseInt(document.getElementById('cantidad').value);
+                const fecha = document.getElementById('fecha').value;
+
+                if (!nombre || !categoria || !cantidad || cantidad < 1 || !fecha) {
+                    mostrarMensaje("Complete todos los campos correctamente.", "error");
+                    return;
+                }
+
+                const datos = new URLSearchParams();
+                datos.append('nombre', nombre);
+                datos.append('categoria', categoria);
+                datos.append('cantidad', cantidad);
+                datos.append('fecha', fecha);
+
+                fetch('../PHP_INV/PRO/crear_producto.php', {
+                    method: 'POST',
+                    body: datos
+                })
+                    .then(res => res.text())
+                    .then(respuesta => {
+                        mostrarMensaje(respuesta, "exito");
+                        setTimeout(() => cargarInventario(), 1200);
+                    })
+                    .catch(() => mostrarMensaje("Error al guardar el producto.", "error"));
+            }
+        }
+
+        // Formulario para crear nuevo proveedor
+        function mostrarFormularioProveedor() {
+            document.getElementById('contenido').innerHTML = `
+                <h2>Nuevo Proveedor</h2>
+                <form id="formProveedor" class="formulario">
+                    <label for="nombreProveedor">Nombre del Proveedor</label>
+                    <input type="text" id="nombreProveedor" placeholder="Nombre del proveedor" required />
+
+                    <label for="contacto">Contacto</label>
+                    <input type="text" id="contacto" placeholder="Información de contacto" required />
+
+                    <label for="producto">Producto que suministra</label>
+                    <input type="text" id="producto" placeholder="Producto" required />
+
+                    <button type="submit">Guardar Proveedor</button>
+                </form>
+                <div id="mensaje"></div>
+            `;
+
+            document.getElementById('formProveedor').onsubmit = function (e) {
+                e.preventDefault();
+
+                const nombreProveedor = document.getElementById('nombreProveedor').value.trim();
+                const contacto = document.getElementById('contacto').value.trim();
+                const producto = document.getElementById('producto').value.trim();
+
+                if (!nombreProveedor || !contacto || !producto) {
+                    mostrarMensaje("Complete todos los campos correctamente.", "error");
+                    return;
+                }
+
+                const datos = new URLSearchParams();
+                datos.append('nombre', nombreProveedor);
+                datos.append('contacto', contacto);
+                datos.append('producto', producto);
+
+                fetch('../PHP_INV/PRO/crear_proveedores.php', {
+                    method: 'POST',
+                    body: datos
+                })
+                    .then(res => res.text())
+                    .then(respuesta => {
+                        mostrarMensaje(respuesta, "exito");
+                        setTimeout(() => cargarProveedores(), 1200);
+                    })
+                    .catch(() => mostrarMensaje("Error al guardar el proveedor.", "error"));
+            }
+        }
+
+        function mostrarMensaje(texto, tipo) {
+            const div = document.getElementById('mensaje');
+            div.textContent = texto;
+            div.className = "mensaje " + (tipo === "error" ? "error" : "exito");
+        }
+
+        // Cargar inventario
+        function cargarInventario() {
+            fetch('../PHP_INV/PRO/ver_producto.php')
+                .then(res => res.json())
+                .then(productos => {
+                    let html = '<h2>Inventario de Productos</h2>';
+                    if (!Array.isArray(productos) || productos.length === 0) {
+                        html += '<p>No hay productos en el inventario.</p>';
+                    } else {
+                        html += `
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Categoría</th>
+                                    <th>Cantidad</th>
+                                    <th>Fecha</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                        `;
+                        productos.forEach(p => {
+                            html += `
+                                <tr>
+                                    <td>${p.id}</td>
+                                    <td><input type="text" id="nombre-${p.id}" value="${p.nombre}"></td>
+                                    <td><input type="text" id="categoria-${p.id}" value="${p.categoria}"></td>
+                                    <td><input type="number" min="1" id="cantidad-${p.id}" value="${p.cantidad}"></td>
+                                    <td><input type="date" id="fecha-${p.id}" value="${p.fecha}"></td>
+                                    <td>
+                                        <button class="btn-update" onclick="actualizarProducto(${p.id})">Actualizar</button>
+                                        <button class="btn-delete" onclick="eliminarProducto(${p.id})">Eliminar</button>
+                                    </td>
+                                </tr>
+                            `;
+                        });
+                        html += '</tbody></table>';
+                    }
+                    document.getElementById('contenido').innerHTML = html;
+                })
+                .catch(() => {
+                    document.getElementById('contenido').innerHTML = '<p style="color:red;">Error al cargar inventario.</p>';
+                });
+        }
+
+        // Cargar proveedores
+        function cargarProveedores() {
+            fetch('../PHP_INV/PRO/ver_proveedores.php')
+                .then(res => res.json())
+                .then(proveedores => {
+                    let html = '<h2>Lista de Proveedores</h2>';
+                    if (!Array.isArray(proveedores) || proveedores.length === 0) {
+                        html += '<p>No hay proveedores registrados.</p>';
+                    } else {
+                        html += `
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Contacto</th>
+                                    <th>Producto</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                        `;
+                        proveedores.forEach(p => {
+                            html += `
+                                <tr>
+                                    <td>${p.id}</td>
+                                    <td><input type="text" id="nombreP-${p.id}" value="${p.nombre}"></td>
+                                    <td><input type="text" id="contacto-${p.id}" value="${p.contacto}"></td>
+                                    <td><input type="text" id="producto-${p.id}" value="${p.producto}"></td>
+                                    <td>
+                                        <button class="btn-update" onclick="actualizarProveedor(${p.id})">Actualizar</button>
+                                        <button class="btn-delete" onclick="eliminarProveedor(${p.id})">Eliminar</button>
+                                    </td>
+                                </tr>
+                            `;
+                        });
+                        html += '</tbody></table>';
+                    }
+                    document.getElementById('contenido').innerHTML = html;
+                })
+                .catch(() => {
+                    document.getElementById('contenido').innerHTML = '<p style="color:red;">Error al cargar proveedores.</p>';
+                });
+        }
+
+        // Actualizar producto
+        function actualizarProducto(id) {
+            const nombre = document.getElementById(`nombre-${id}`).value.trim();
+            const categoria = document.getElementById(`categoria-${id}`).value.trim();
+            const cantidad = parseInt(document.getElementById(`cantidad-${id}`).value);
+            const fecha = document.getElementById(`fecha-${id}`).value;
+
+            if (!nombre || !categoria || !cantidad || cantidad < 1 || !fecha) {
+                alert("Complete todos los campos correctamente antes de actualizar.");
+                return;
+            }
+
+            const datos = new URLSearchParams();
+            datos.append('id', id);
+            datos.append('nombre', nombre);
+            datos.append('categoria', categoria);
+            datos.append('cantidad', cantidad);
+            datos.append('fecha', fecha);
+
+            fetch('../PHP_INV/PRO/actualiza_producto.php', {
+                method: 'POST',
+                body: datos
+            })
+                .then(res => res.text())
+                .then(respuesta => {
+                    alert(respuesta);
+                    cargarInventario();
+                })
+                .catch(() => alert("Error al actualizar producto."));
+        }
+
+        // Eliminar producto
+        function eliminarProducto(id) {
+            if (!confirm("¿Seguro que quieres eliminar este producto?")) return;
+
+            const datos = new URLSearchParams();
+            datos.append('id', id);
+
+            fetch('../PHP_INV/PRO/eliminar_producto.php', {
+                method: 'POST',
+                body: datos
+            })
+                .then(res => res.text())
+                .then(respuesta => {
+                    alert(respuesta);
+                    cargarInventario();
+                })
+                .catch(() => alert("Error al eliminar producto."));
+        }
+
+        // Actualizar proveedor
+        function actualizarProveedor(id) {
+            const nombre = document.getElementById(`nombreP-${id}`).value.trim();
+            const contacto = document.getElementById(`contacto-${id}`).value.trim();
+            const producto = document.getElementById(`producto-${id}`).value.trim();
+
+            if (!nombre || !contacto || !producto) {
+                alert("Complete todos los campos correctamente antes de actualizar.");
+                return;
+            }
+
+            const datos = new URLSearchParams();
+            datos.append('id', id);
+            datos.append('nombre', nombre);
+            datos.append('contacto', contacto);
+            datos.append('producto', producto);
+
+            fetch('../PHP_INV/PRO/actualizar_proveedores.php', {
+                method: 'POST',
+                body: datos
+            })
+                .then(res => res.text())
+                .then(respuesta => {
+                    alert(respuesta);
+                    cargarProveedores();
+                })
+                .catch(() => alert("Error al actualizar proveedor."));
+        }
+
+        // Eliminar proveedor
+        function eliminarProveedor(id) {
+            if (!confirm("¿Seguro que quieres eliminar este proveedor?")) return;
+
+            const datos = new URLSearchParams();
+            datos.append('id', id);
+
+            fetch('../PHP_INV/PRO/elimina_proveedores.php', {
+                method: 'POST',
+                body: datos
+            })
+                .then(res => res.text())
+                .then(respuesta => {
+                    alert(respuesta);
+                    cargarProveedores();
+                })
+                .catch(() => alert("Error al eliminar proveedor."));
+        }
+
+        // Reporte simple: Total productos y proveedores
+        function mostrarReporte() {
+            Promise.all([
+                fetch('../PHP_INV/PRO/total_productos.php').then(res => res.json()),
+                fetch('../PHP_INV/PRO/total_proveedores.php').then(res => res.json())
+            ]).then(([totalProductos, totalProveedores]) => {
+                document.getElementById('contenido').innerHTML = `
+                    <h2>Reporte General</h2>
+                    <div class="balance-contenedor">
+                        <div class="balance-card positivo">
+                            <h3>Total Productos en Inventario</h3>
+                            <p>${totalProductos.total || 0}</p>
+                        </div>
+                        <div class="balance-card positivo">
+                            <h3>Total Proveedores</h3>
+                            <p>${totalProveedores.total || 0}</p>
+                        </div>
+                    </div>
+                `;
+            }).catch(() => {
+                document.getElementById('contenido').innerHTML = '<p style="color:red;">Error al cargar reporte.</p>';
+            });
+        }
+
+        // Inicializar en inicio
+        mostrarInicio();
+    </script>
+</body>
+
+</html>
