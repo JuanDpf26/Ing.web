@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>CRM - ERP AbogaTech</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            height: 100vh;
+            background-color: #f5f5f5;
+        }
+        .sidebar {
+            width: 260px;
+            background-color: #0d0d26;
+            color: white;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        .sidebar h2 {
+            color: #f5c518;
+            font-size: 22px;
+            margin-bottom: 40px;
+        }
+        .sidebar ul { list-style: none; padding: 0; }
+        .sidebar li {
+            font-size: 16px;
+            padding: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: background 0.2s;
+        }
+        .sidebar li:hover {
+            background-color: #1f1f3b;
+            border-radius: 6px;
+        }
+        .sidebar li span {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+        .main {
+            flex: 1;
+            padding: 60px;
+            overflow-y: auto;
+        }
+        h2 {
+            font-size: 26px;
+            color: #222;
+            text-align: left;
+            margin-bottom: 30px;
+        }
+        table {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            border-collapse: collapse;
+            margin-top: 30px;
+            background: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 14px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        th { background-color: #f5f5f5; }
+        input {
+            padding: 6px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 5px;
+            margin: 2px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+        .btn-update { background-color: #f5c518; color: black; }
+        .btn-update:hover { background-color: #e0b000; }
+        .btn-delete { background-color: #E53935; color: white; }
+        .btn-delete:hover { background-color: #d32f2f; }
+    </style>
+</head>
+<body>
+
+<div class="sidebar">
+    <h2>🔶 CRM ABOGATECH</h2>
+    <ul>
+        <li onclick="mostrarInicio()"><span>🏠</span>Inicio</li>
+        <li onclick="cargarClientes()"><span>👥</span>Clientes</li>
+        <li onclick="cargarCitas()"><span>📅</span>Citas</li>
+        <li onclick="cargarFacturas()"><span>📑</span>Facturas</li>
+        <li onclick="cargarPagos()"><span>💳</span>Pagos</li>
+        <li onclick="cargarNominas()"><span>🧾</span>Nóminas</li>
+        <li onclick="cargarMovimientos()"><span>💰</span>Movimientos</li>
+        <li onclick="cargarInventario()"><span>📦</span>Inventario</li>
+        <li onclick="cargarProveedores()"><span>🏢</span>Proveedores</li>
+        <li onclick="volverAlPanel()"><span>↩️</span>Salir</li>
+    </ul>
+</div>
+
+<div class="main" id="contenido">
+    <h2>CRM - ERP AbogaTech</h2>
+    <p>Usa el menú lateral para gestionar clientes, citas, facturas, pagos, nóminas, inventario, proveedores y más.</p>
+</div>
+
+<script>
+/* -------------------
+   FUNCIONES GENERALES
+--------------------*/
+function mostrarInicio() {
+    document.getElementById('contenido').innerHTML = `
+        <h2>CRM - ERP AbogaTech</h2>
+        <p>Usa el menú lateral para gestionar clientes, citas, facturas, pagos, nóminas, inventario, proveedores y más.</p>
+    `;
+}
+function volverAlPanel() {
+    window.location.href = '../HTML/Módulos.html';
+}
+
+/* -------------------
+   CLIENTES
+--------------------*/
+function cargarClientes() {
+    fetch('../PHP_CLIENTES/obtener_clientes.php')
+        .then(r => r.json())
+        .then(clientes => {
+            let html = '<h2>Lista de Clientes</h2>';
+            if (clientes.length === 0) { html += '<p>No hay clientes registrados.</p>'; }
+            else {
+                html += `<table><tr><th>ID</th><th>Nombre</th><th>Edad</th><th>Correo</th><th>Acciones</th></tr>`;
+                clientes.forEach(c => {
+                    html += `
+                        <tr>
+                            <td>${c.id}</td>
+                            <td><input value="${c.nombre}" id="nombre-${c.id}"></td>
+                            <td><input value="${c.edad}" id="edad-${c.id}"></td>
+                            <td><input value="${c.correo}" id="correo-${c.id}"></td>
+                            <td>
+                                <button class="btn-update" onclick="actualizarCliente(${c.id})">Actualizar</button>
+                                <button class="btn-delete" onclick="eliminarCliente(${c.id})">Eliminar</button>
+                            </td>
+                        </tr>`;
+                });
+                html += '</table>';
+            }
+            document.getElementById('contenido').innerHTML = html;
+        });
+}
+function actualizarCliente(id) {
+    const nombre = document.getElementById(`nombre-${id}`).value;
+    const edad = document.getElementById(`edad-${id}`).value;
+    const correo = document.getElementById(`correo-${id}`).value;
+    const data = new URLSearchParams();
+    data.append('id', id); data.append('nombre', nombre); data.append('edad', edad); data.append('correo', correo);
+    fetch('../PHP_CLIENTES/actualizar_cliente.php', { method: 'POST', body: data })
+        .then(r => r.text()).then(msg => { alert(msg); cargarClientes(); });
+}
+function eliminarCliente(id) {
+    if (!confirm("¿Eliminar cliente?")) return;
+    const data = new URLSearchParams(); data.append('id', id);
+    fetch('../PHP_CLIENTES/eliminar_clientes.php', { method: 'POST', body: data })
+        .then(r => r.text()).then(msg => { alert(msg); cargarClientes(); });
+}
+
+/* -------------------
+   CITAS
+--------------------*/
+function cargarCitas() {
+    fetch('../PHP_CLIENTES/obtener_citas.php')
+        .then(r => r.json())
+        .then(citas => {
+            let html = '<h2>Lista de Citas</h2>';
+            if (citas.length === 0) { html += '<p>No hay citas registradas.</p>'; }
+            else {
+                html += `<table><tr>
+                    <th>ID</th><th>Cliente</th><th>Correo</th><th>Servicio</th>
+                    <th>Precio</th><th>Duración</th><th>Fecha</th><th>Hora</th><th>ID Abogado</th><th>Acciones</th></tr>`;
+                citas.forEach(c => {
+                    html += `
+                        <tr>
+                            <td>${c.id}</td>
+                            <td><input value="${c.nombre_cliente}" id="nombre_cliente-${c.id}"></td>
+                            <td><input value="${c.correo}" id="correo-${c.id}"></td>
+                            <td><input value="${c.servicio}" id="servicio-${c.id}"></td>
+                            <td><input value="${c.precio}" id="precio-${c.id}"></td>
+                            <td><input value="${c.duracion}" id="duracion-${c.id}"></td>
+                            <td><input type="date" value="${c.fecha_reunion}" id="fecha_reunion-${c.id}"></td>
+                            <td><input type="time" value="${c.hora_reunion}" id="hora_reunion-${c.id}"></td>
+                            <td><input type="number" value="${c.id_abogado}" id="id_abogado-${c.id}"></td>
+                            <td>
+                                <button class="btn-update" onclick="actualizarCita(${c.id})">Actualizar</button>
+                                <button class="btn-delete" onclick="eliminarCita(${c.id})">Eliminar</button>
+                            </td>
+                        </tr>`;
+                });
+                html += '</table>';
+            }
+            document.getElementById('contenido').innerHTML = html;
+        });
+}
+function actualizarCita(id) {
+    const data = new URLSearchParams();
+    ['nombre_cliente','correo','servicio','precio','duracion','fecha_reunion','hora_reunion','id_abogado']
+        .forEach(campo => data.append(campo, document.getElementById(`${campo}-${id}`).value));
+    data.append('id', id);
+    fetch('../PHP_CLIENTES/actualizar_citas.php', { method: 'POST', body: data })
+        .then(r => r.text()).then(msg => { alert(msg); cargarCitas(); });
+}
+function eliminarCita(id) {
+    if (!confirm("¿Eliminar cita?")) return;
+    const data = new URLSearchParams(); data.append('id', id);
+    fetch('../PHP_CLIENTES/eliminar_citas.php', { method: 'POST', body: data })
+        .then(r => r.text()).then(msg => { alert(msg); cargarCitas(); });
+}
+
+/* -------------------
+   FACTURAS
+--------------------*/
+function cargarFacturas() {
+    fetch('../PHP_VENTAS/obtener_facturas.php')
+        .then(r => r.json())
+        .then(facturas => {
+            let html = '<h2>Facturas</h2>';
+            if (facturas.length === 0) { html += '<p>No hay facturas registradas.</p>'; }
+            else {
+                html += `<table><tr>
+                    <th>ID</th><th>Cliente</th><th>Servicio</th><th>Precio</th>
+                    <th>Fecha</th><th>Hora</th><th>Estado</th><th>Acciones</th></tr>`;
+                facturas.forEach(f => {
+                    html += `
+                        <tr>
+                            <td>${f.factura_id}</td>
+                            <td><input value="${f.nombre_cliente}" id="nombre_cliente-${f.factura_id}"></td>
+                            <td><input value="${f.servicio}" id="servicio-${f.factura_id}"></td>
+                            <td><input value="${f.precio}" id="precio-${f.factura_id}"></td>
+                            <td><input type="date" value="${f.fecha_reunion}" id="fecha-${f.factura_id}"></td>
+                            <td><input type="time" value="${f.hora_reunion}" id="hora-${f.factura_id}"></td>
+                            <td><input value="${f.estado}" id="estado-${f.factura_id}"></td>
+                            <td>
+                                <button class="btn-update" onclick="actualizarFactura(${f.factura_id})">Actualizar</button>
+                                <button class="btn-delete" onclick="eliminarFactura(${f.factura_id})">Eliminar</button>
+                            </td>
+                        </tr>`;
+                });
+                html += '</table>';
+            }
+            document.getElementById('contenido').innerHTML = html;
+        });
+}
+function actualizarFactura(id) {
+    const data = new URLSearchParams();
+    ['nombre_cliente','servicio','precio','fecha','hora','estado']
+        .forEach(campo => data.append(campo, document.getElementById(`${campo}-${id}`).value));
+    data.append('id', id);
+    fetch('../PHP_CLIENTES/actualizar_factura.php', { method: 'POST', body: data })
+        .then(r => r.text()).then(msg => { alert(msg); cargarFacturas(); });
+}
+function eliminarFactura(id) {
+    if (!confirm("¿Eliminar factura?")) return;
+    const data = new URLSearchParams(); data.append('id', id);
+    fetch('../PHP_CLIENTES/eliminar_factura.php', { method: 'POST', body: data })
+        .then(r => r.text()).then(msg => { alert(msg); cargarFacturas(); });
+}
+
+/* -------------------
+   PAGOS
+--------------------*/
+function cargarPagos() {
+    fetch('../PHP_VENTAS/obtener_pagos.php')
+        .then(r => r.json())
+        .then(pagos => {
+            let html = '<h2>Pagos</h2>';
+            if (pagos.length === 0) { html += '<p>No hay pagos registrados.</p>'; }
+            else {
+                html += `<table><tr><th>ID</th><th>Factura</th><th>Método</th><th>Fecha</th></tr>`;
+                pagos.forEach(p => {
+                    html += `
+                        <tr>
+                            <td>${p.pago_id}</td>
+                            <td>${p.factura_id}</td>
+                            <td>${p.metodo_pago}</td>
+                            <td>${p.fecha_pago}</td>
+                        </tr>`;
+                });
+                html += '</table>';
+            }
+            document.getElementById('contenido').innerHTML = html;
+        });
+}
+
+/* -------------------
+   NÓMINAS
+--------------------*/
+function cargarNominas() {
+    fetch('../PHP_CLIENTES/obtener_nominas.php')
+        .then(r => r.json())
+        .then(nominas => {
+            let html = '<h2>Nóminas</h2>';
+            if (nominas.length === 0) { html += '<p>No hay nóminas registradas.</p>'; }
+            else {
+                html += `<table><tr><th>ID</th><th>Abogado</th><th>Salario Base</th><th>Bonos</th><th>Descuentos</th><th>Total</th></tr>`;
+                nominas.forEach(n => {
+                    html += `
+                        <tr>
+                            <td>${n.id}</td>
+                            <td>${n.nombre_abogado}</td>
+                            <td>${n.salario_base}</td>
+                            <td>${n.bonificaciones}</td>
+                            <td>${n.descuentos}</td>
+                            <td>${n.total_pago}</td>
+                        </tr>`;
+                });
+                html += '</table>';
+            }
+            document.getElementById('contenido').innerHTML = html;
+        });
+}
+
+/* -------------------
+   MOVIMIENTOS
+--------------------*/
+function cargarMovimientos() {
+    fetch('../PHP_CONTABILIDAD/ver_movimientos.php')
+        .then(r => r.json())
+        .then(movs => {
+            let html = '<h2>Movimientos Financieros</h2>';
+            if (movs.length === 0) { html += '<p>No hay movimientos registrados.</p>'; }
+            else {
+                html += `<table><tr><th>ID</th><th>Tipo</th><th>Concepto</th><th>Monto</th><th>Categoría</th><th>Fecha</th><th>Descripción</th></tr>`;
+                movs.forEach(m => {
+                    html += `
+                        <tr>
+                            <td>${m.id}</td>
+                            <td>${m.tipo}</td>
+                            <td>${m.concepto}</td>
+                            <td>${m.monto}</td>
+                            <td>${m.categoria}</td>
+                            <td>${m.fecha}</td>
+                            <td>${m.descripcion}</td>
+                        </tr>`;
+                });
+                html += '</table>';
+            }
+            document.getElementById('contenido').innerHTML = html;
+        });
+}
+
+/* -------------------
+   INVENTARIO
+--------------------*/
+function cargarInventario() {
+    fetch('../PHP_INV/PRO/ver_producto.php')
+        .then(r => r.json())
+        .then(items => {
+            let html = '<h2>Inventario</h2>';
+            if (items.length === 0) { html += '<p>No hay productos en inventario.</p>'; }
+            else {
+                html += `<table><tr><th>ID</th><th>Nombre</th><th>Categoría</th><th>Cantidad</th><th>Fecha</th></tr>`;
+                items.forEach(i => {
+                    html += `
+                        <tr>
+                            <td>${i.id}</td>
+                            <td>${i.nombre}</td>
+                            <td>${i.categoria}</td>
+                            <td>${i.cantidad}</td>
+                            <td>${i.fecha}</td>
+                        </tr>`;
+                });
+                html += '</table>';
+            }
+            document.getElementById('contenido').innerHTML = html;
+        });
+}
+
+/* -------------------
+   PROVEEDORES
+--------------------*/
+function cargarProveedores() {
+    fetch('../PHP_INV/PRO/ver_proveedores.php')
+        .then(r => r.json())
+        .then(provs => {
+            let html = '<h2>Proveedores</h2>';
+            if (provs.length === 0) { html += '<p>No hay proveedores registrados.</p>'; }
+            else {
+                html += `<table><tr><th>ID</th><th>Nombre</th><th>Contacto</th><th>Producto</th></tr>`;
+                provs.forEach(p => {
+                    html += `
+                        <tr>
+                            <td>${p.id}</td>
+                            <td>${p.nombre}</td>
+                            <td>${p.contacto}</td>
+                            <td>${p.producto}</td>
+                        </tr>`;
+                });
+                html += '</table>';
+            }
+            document.getElementById('contenido').innerHTML = html;
+        });
+}
+</script>
+
+</body>
+</html>
